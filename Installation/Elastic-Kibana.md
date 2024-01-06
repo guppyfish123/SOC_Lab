@@ -1,5 +1,10 @@
 <h1 align=center><img align="center" align=center src="https://www.elastic.co/apple-icon-57x57.png" height="45px" width="45px">&nbsp;&nbsp;ElasticSearch & Kibana Installation/Setup</h1>
 
+## Table Of Content
+- [ElasticSearch](#elasticsearch)
+
+
+
 ## AWS
 To get Elastic up and running, our first step is to set up a server, and AWS is the go-to platform for VMs. While you're free to choose any platform, AWS is highly recommended due to its popularity and reliability. If you're looking for cost-effective options, check out these Cheap VM Hostings. Keep in mind that this might be the only part of the lab where some expenses could be involved.
 [Cheap VM Hostings](https://webhostingadvices.com/19-cheap-vm-hosting/).
@@ -46,6 +51,8 @@ Download: [Putty](https://www.putty.org/)
 
 You'll most likily be greeted with a pop-up warning which you can just accept. Though beside from that you have now connected to your AWS VM. 
 <br><br>
+
+# ElasticSearch
 
 ## ElasticSearch Installation
 Setting up ElasticSearch can be a bit intricate, and the process may vary depending on the version you're working with. For this lab, we'll be using Elastic Version 8.11, the current version as of 2023. Refer to the official ElasticSearch Guide for more details [Link](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html).
