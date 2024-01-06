@@ -6,7 +6,7 @@ This DIY project utilizes a range of free open source resources including Elasti
 ## Key Components
 In the SOC Lab, we leverage a carefully selected set of free and open-source tools to empower your security operations. Here's an overview of the key components driving this lab:
 
-### <img align="center" src="https://www.elastic.co/apple-icon-57x57.png" height="30px" width="30px">&nbsp;&nbsp;   Elastic, Kibana & Fleet
+### <img align="center" src="https://www.elastic.co/apple-icon-57x57.png" height="30px" width="30px">&nbsp;&nbsp;   Elastic, Kibana, Filebeat & Fleet
 Elastic, along with the versatile suite it provides, serves as our SIEM solution, responsible for efficiently collecting and storing logs originating from our endpoints. Explore Elastic's range of products here [Link](https://www.elastic.co/).
 
 ### <img align="center" src="https://thehive-project.org/assets/ico/favicon.ico" height="30px" width="30px">&nbsp;&nbsp;   The Hive
