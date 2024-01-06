@@ -1,9 +1,9 @@
-# AWS
+# <img align="center" src="https://files.softicons.com/download/social-media-icons/free-social-media-icons-by-uiconstock/png/512x512/AWS-Icon.png" height="45px" width="45px">&nbsp;  AWS
 To get Elastic up and running, our first step is to set up a server, and AWS is the go-to platform for VMs. While you're free to choose any platform, AWS is highly recommended due to its popularity and reliability. If you're looking for cost-effective options, check out these Cheap VM Hostings. Keep in mind that this might be the only part of the lab where some expenses could be involved.
 [Cheap VM Hostings](https://webhostingadvices.com/19-cheap-vm-hosting/).
 If you lack experience with major cloud providers (AWS, Azure, Google), this is an excellent opportunity to dive into one of them.
 <br><br>
-### AWS Setup Instructions
+## ☁️ AWS Setup Instructions
 1. Navigate to the EC2 Dashboard on AWS and select ***Launch Instance***.
 2. Give your VM a meaningful name under ***Name and tags***. For example, I'll name mine Elastic_Ubuntu.
 
@@ -31,7 +31,9 @@ Your VM is created, and while it might take some time to complete, head back to 
 
 To connect to your machine via AWS, use the Connect button on the top right. If it's greyed out, your instance might not be ready or started. In the Connect to instance tab, focus on EC2 Instance Connect for AWS connection or SSH Client for connecting locally through SSH.
 <br><br>
-### Putty
+
+## 🔒 Putty
+
 For Windows users, connecting to your VM using Putty is a straightforward process. Putty is a commonly used software for SSH connections. Follow this quick walkthrough:
 
 Download: [Putty](https://www.putty.org/)
