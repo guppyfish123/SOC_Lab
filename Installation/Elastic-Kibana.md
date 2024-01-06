@@ -2,59 +2,18 @@
 
 ## Table Of Content
 - [ElasticSearch](#elasticsearch)
+   - [Installation](#installation)
+   - [Configurations](#configurations)
+   - [Start](#start)
+- [Kibana](#kibana)
+   - [Installation](#installation)
+   - [Configurations](#configurations)
+   - [Start](#start)
 
-
-
-## AWS
-To get Elastic up and running, our first step is to set up a server, and AWS is the go-to platform for VMs. While you're free to choose any platform, AWS is highly recommended due to its popularity and reliability. If you're looking for cost-effective options, check out these Cheap VM Hostings. Keep in mind that this might be the only part of the lab where some expenses could be involved.
-[Cheap VM Hostings](https://webhostingadvices.com/19-cheap-vm-hosting/).
-If you lack experience with major cloud providers (AWS, Azure, Google), this is an excellent opportunity to dive into one of them.
-<br><br>
-### AWS Setup Instructions
-1. Navigate to the EC2 Dashboard on AWS and select ***Launch Instance***.
-2. Give your VM a meaningful name under ***Name and tags***. For example, I'll name mine Elastic_Ubuntu.
-
-> [!TIP]
-> Stick to a Naming Convention for clarity and future reference.
-
-3. Under ***Application and OS Images***, choose Ubuntu as the OS and leave other configurations as default.
-4. Move to ***Instance type*** to specify your specs. While Elastic can run on T2.Medium, T2.Large is recommended for smoother performance.
-5. Set up a key for login under ***Key pair***. Click Create new key pair.
-    - Provide a ***Key pair name***, keeping it consistent with your server name.
-    - ***Key pair type*** can be left as default (RSA).
-    - Choose the ***Private key file format*** depending on your preference (e.g., .ppk for Putty).
-    - After configuring, click ***Create Key Pair***, and move the downloaded Private key to your project folder.<br><br>
-
-> [!CAUTION]
-> Double-check your private key installation, as it cannot be regenerated once the instance is created.
-
-6. In ***Network settings***, leave the default settings for Create Security Group and Allow SSH traffic from selected. Later, we'll modify these to reach the Elastic web page, avoiding unnecessary open ports.
-7. In ***Configure storage***, set the storage to 15 GiBs, with the option to add more volumes later if needed.
-8. ***Advanced details*** can be left as default.
-9. Review your summary and ensure under ***Number of instances***, only 1 instance is being created.
-10. Deploy your instance by clicking ***Launch Instance***.<br><br>
-
-Your VM is created, and while it might take some time to complete, head back to your instance dashboard to find the details, including your Private & public IP needed for later.
-
-To connect to your machine via AWS, use the Connect button on the top right. If it's greyed out, your instance might not be ready or started. In the Connect to instance tab, focus on EC2 Instance Connect for AWS connection or SSH Client for connecting locally through SSH.
-<br><br>
-### Putty
-For Windows users, connecting to your VM using Putty is a straightforward process. Putty is a commonly used software for SSH connections. Follow this quick walkthrough:
-
-Download: [Putty](https://www.putty.org/)
-
-1. Open up the Putty Application on your machine
-2. Putty will load into the sesion detail tab, here you will enter in your Public IPv4 DNS to your instance into the ***Host Name (or IP Address)*** field. If your following along in the ***Connect to instance*** SSH Client Tab then your Public IPv4 DNS to your instance is provided in listing 4. ***Port*** should be set to 22 and ***Connection Type*** as SSH though this should be set automatically as default.
-3. Next we need to add the user we are wanting to connect to, which can be done in the ***Data*** tab on the left under ***Connection***. Set the ***Auto-Login username*** to Ubuntu, which is the default user that is create when you launch a Ubuntu AWS Instance.
-4. Lastly we need to apply our Private key that we downloaded when we made our insatnce. Expand the ***SSH*** and ***Auth*** tabs on the left hand side till you see the ***Credentials*** tab. In the credentials tab we want to select our Private key that we have on file by hitting ***Browse*** under the ***Private key file for authentication*** field.
-5. Finally we can connect to our VM by hittin the ***Open*** button on the bottom right on the window
-
-You'll most likily be greeted with a pop-up warning which you can just accept. Though beside from that you have now connected to your AWS VM. 
-<br><br>
 
 # ElasticSearch
 
-## ElasticSearch Installation
+## Installation
 Setting up ElasticSearch can be a bit intricate, and the process may vary depending on the version you're working with. For this lab, we'll be using Elastic Version 8.11, the current version as of 2023. Refer to the official ElasticSearch Guide for more details [Link](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html).
 <br>
 
@@ -78,7 +37,7 @@ sudo apt-get update && sudo apt-get install elasticsearch
 With these commands, ElasticSearch is now up and running.
 <br><br>
 
-## Configure Elastic
+## Configurations
 ElasticSearch's configurations can be complex, depending on your environment and requirements. We'll adjust settings to enhance the security of our Elastic instance. Configuration settings are stored in the elasticsearch.yml file. Open the file using Vim:
 ```bash
 sudo vim /etc/elasticsearch/elasticsearch.yml
@@ -154,7 +113,7 @@ Remove any truststore.path or keystore.path variables from the xpack.security.ht
 
 <br>
 
-## Start up ElasticSearch 
+## Startup 
 
 To configure Elastic so that it starts automatically on boot, run the following command:
 ```bash
@@ -187,7 +146,9 @@ sudo systemctl stop elasticsearch
 
 <br><br><br>
 
-## Kibana Installation 
+# Kibana
+
+## Installation 
 Now that we have ElasticSearch installed and configured, we move on to Kibana. We'll be installing version 8.11 of Kibana. Make sure that whatever version you are using matches the version of ElasticSearch that you have running. More information can be found in the official Kibana documentation [Link](https://www.elastic.co/guide/en/kibana/current/setup.html).
 
 To install Kibana, use the following command:
@@ -245,7 +206,7 @@ sudo chown -R /etc/kibana/certs
 
 <br><br>
 
-## Configure Kibana
+## Configurations
 Now to add our certificate to our kibana configs and enable SSL encryption. 
 Heading back over to our '/etc/kibana/kibana.yml' file:
 ```yml
@@ -283,7 +244,7 @@ To create a service account token use the following command
 
 <br><br>
 
-## Storing Keys
+### Storing Keys
 Instead of storing these keys in plain text in your config file, it's always best practice to keep them encrypted in case your machine is compromised. Kibana has a built-in key vault for storing these types of sensitive keys and credentials. To set this up, go to the /usr/share/kibana/bin directory and run the following command:
 ```bash
 ./kibana-keystore add elasticsearch.serviceAccountToken
@@ -304,7 +265,7 @@ This command will show you the permissions for every file in the directory. To a
 chown -R kibana:kibana ./
 ```
 
-## Start up Kibana
+## Startup
 To configure Kibana so that it starts automatically on boot, run the following command:
 ```bash
 sudo /bin/systemctl daemon-reload
