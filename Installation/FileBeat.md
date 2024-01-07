@@ -185,5 +185,35 @@ To create an API key for our Filebeat host, we'll first need to set up a user sp
 <br><br>
 
 ## <div id="startup">🚀 Startup
+To configure Filebeat so that it starts automatically on boot, run the following command:
+```bash
+sudo /bin/systemctl daemon-reload
+sudo /bin/systemctl enable filebeat
+```
+Filebeat can now be started using the following:
+```bash
+sudo systemctl start filebeat
+```
+
+To check that filebeat is running and startup hasn't failed, use the following command:
+```bash
+sudo systemctl status filebeat
+```
+
+In the event that filebeat fails to start, use the following commands to look at the logs to determine the reason:
+```bash
+journalctl -u filebeat -n 50
+
+# -n is the number of line you want to print out
+```
+
+To stop filebeat at any point while running, use the following command:
+```bash
+sudo systemctl stop filebeat
+```
+<br><br>
 
 
+
+##Conclusion
+Filebeat and elastic are now setup and should be communicating with each other. It may take some time for the logs to carry through from the filebeat host to the elastichost. Though eventually you should see logs come through on your filebeat-* index which you can find in the discovery tab.
