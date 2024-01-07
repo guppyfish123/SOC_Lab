@@ -102,7 +102,7 @@ setup.kibana:
 <br>
 
 ### Elasticsearch Output
-Connecting Filebeat to our Elasticsearch host involves specifying its configuration port and private IP. Since we've configured Elasticsearch to work over HTTPS, we add the self-signed certificate. Elasticsearch also require credentials to login to the service, which can be done either through a username and password or through a API key. 
+Connecting Filebeat to our Elasticsearch host involves specifying its configuration port and private IP. Since we've configured Elasticsearch to work over HTTPS, we add the self-signed certificate. Elasticsearch also requires credentials to log in to the service, which can be done either through a username and password or through an API key. For this lab, as it is generally more secure, we are using an API key which we will need to set up first back in our elastic host.
 ```yml
 # ---------------------------- Elasticsearch Output ----------------------------
 
@@ -113,11 +113,75 @@ output.elasticsearch:
     certificate_authorities: ["/etc/filebeat/certs/ca.crt"]
     certificate: "/etc/filebeat/certs/kibana/kibana.crt"
     key: "/etc/filebeat/certs/kibana/kibana.key"
-
-  api_key: "{api key}"
-
 ```
+<br>
 
+### API Key 
+
+To create an API key for our Filebeat host, we'll first need to set up a user specifically for the purpose of uploading logs to Elasticsearch with the minimum permissions, following the principle of least privilege.
+
+1. **Create New User:**
+   - Navigate to **Management > Stack Management > Security > Users.**
+   - Click on "Create User" in the top right-hand corner.
+     - **Username:** filebeat-publisher
+     - **Full Name:** filebeat-publisher
+     - **Email:** filebeat-publisher@local.com *(can be a made-up email)*
+     - **Roles:** Editor *(will change later)*
+   - Click on "Create User."
+
+2. **Create Custom Role:**
+   - Go to the **Roles** tab under the Security section in Stack Management.
+   - Click on "Create Role" in the top right-hand corner.
+     - **Role Name:** filebeat-publisher
+     - **Cluster Privileges:** Monitor, Read_ilm, Read_pipeline, manage_ingest_pipelines, manage_pipeline
+     - **Indices:** Filebeat-*
+     - **Privileges:** Create_doc
+   - Click on "Create Role."
+
+3. **Update Role:**
+   - Go back to the Users section, edit the filebeat-publisher user, and add the newly created role to it.
+   - Ensure to hit "Update User" to apply the changes to the user.
+
+4. **Create API:**
+   - Go to **Dev Tools** located under the Management category on the main nav bar.
+   - In the console, paste the following command:
+     ```json
+     POST /_security/api_key/grant
+     {
+       "grant_type": "password",
+       "username": "Username", // Username for the user created for Filebeat
+       "password": "Password", // Password for that user 
+       "api_key" : {
+         "name": "apmuser-key" // Name you want to give your API 
+       }
+     }
+     ```
+   - The return output should be simular to the following:
+     ```json
+     {
+        "id": "VuaCfGcBCdbkQm-e5aOx",        
+        "name": "my-api-key",
+        "expiration": 1544068612110,         
+        "api_key": "ui2lp2axTNmsyakw9tvNnw", 
+        "encoded": "VnVhQ2ZHY0JDZGJrUW0tZTVhT3g6dWkybHAyYXhUTm1zeWFrdzl0dk5udw=="  
+     }
+     ```
+   -  This key should also be listed in your **API Keys** tab where you can also manage and delete the key
+   -  Any changes made to the permission/roles of the user will require the API key to be reissued for the changes to apply
+> [!CAUTION] 
+> Ensure that you note down this data, as you won't be able to access your key again once you leave this page.
+    
+<br>
+
+5. Add to KeyStore
+   - To ensure that we don't leave our API key in plain text within the YAML file, we can add Filebeat's built-in keystore, similar to what we did with Kibana.
+   - Go to our `/usr/share/filebeat/bin` directory and run the following command:
+     ```bash
+     ./filebeat keystore add ES_API_KEY -c /etc/filebeat/filebeat.yml --path.home /usr/share/filebeat --path.data /var/lib/filebeat
+     # Enter Y if you are prompted to create a keystore
+     # Enter your API key in the following format id:api_key
+     ```
+     
 <br><br>
 
 ## <div id="startup">🚀 Startup
