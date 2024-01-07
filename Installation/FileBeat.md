@@ -10,5 +10,11 @@ In this part of the lab, we'll set up a host running a default Apache website wi
 
 This process allows us to feed valuable data into our Elastic SIEM, providing a practical and hands-on experience in the realm of security operations.
 
+## VM Setup
+First thing, we need a Virtual Machine (VM) to host our filebeat and our web server. I'll be utilizing a T2.small instance in aws, which will serve as a primary host throughout this lab.
+If you're unfamiliar with setting up a VM in AWS, I've provided a handy mini-tutorial [here](./aws). It guides you through the process, ensuring you're ready to launch your AWS instance seamlessly.
+<br>
+
+
 
 
