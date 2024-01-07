@@ -12,7 +12,7 @@
 <br>
 
 ## VM Setup
-To kick off our Elastic SOC Lab journey, we need a reliable Virtual Machine (VM) to host our Elasticsearch and Kibana services. I'll be utilizing a T2.Large instance in aws, which will serve as a primary host throughout this lab.
+To kick off, we need a reliable Virtual Machine (VM) to host our Elasticsearch and Kibana services. I'll be utilizing a T2.Large instance in aws, which will serve as a primary host throughout this lab.
 If you're unfamiliar with setting up a VM in AWS, I've provided a handy mini-tutorial [here](./aws). It guides you through the process, ensuring you're ready to launch your AWS instance seamlessly.
 <br><br>
 
