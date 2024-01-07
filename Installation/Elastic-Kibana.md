@@ -11,6 +11,11 @@
    - [Startup](#startup)
 <br>
 
+## VM Setup
+To kick off our Elastic SOC Lab journey, we need a reliable Virtual Machine (VM) to host our Elasticsearch and Kibana services. I'll be utilizing a T2.Large instance in aws, which will serve as a primary host throughout this lab.
+If you're unfamiliar with setting up a VM in AWS, I've provided a handy mini-tutorial [here](./aws). It guides you through the process, ensuring you're ready to launch your AWS instance seamlessly.
+<br><br>
+
 # <img id="elasticsearch" src="https://static-00.iconduck.com/assets.00/elasticsearch-icon-1839x2048-s0i8mk51.png" height="30px" width="30px">&nbsp; ElasticSearch
 For this lab, we'll be using ElasticSearch Version 8.11, the current version as of 2023. Refer to the official ElasticSearch Documentation for more information [Link](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html).
 <br>
@@ -272,7 +277,7 @@ sudo systemctl start kibana
 
 <br>
 To check that kibana is running and startup hasn't failed, use the following command:
-```
+```bash
 sudo systemctl status kibana
 ```
 
@@ -288,9 +293,12 @@ To stop kibana at any point while running, use the following command:
 sudo systemctl stop kibana
 ```
 <br><br>
-
 ## Conclusion
-Now that we have both Elasticsearch and Kibana up and running, you should be able to access Elasticsearch at https://*public-ip*:6900 and Kibana at https://*public-ip*:5601.
+Congratulations! With both Elasticsearch and Kibana successfully deployed, you're now ready to explore the power of your Elastic SOC Lab. Access Elasticsearch at https://*public-ip*:6900 and Kibana at https://*public-ip*:5601.
+> [!TIP]
+> Ensure that, at this point, you've adjusted your inbound traffic settings on your instance to allow access to Elasticsearch and Kibana ports. For guidance, refer to [this link](./aws).
 
-If you run into any errors with the webpage not loading, check your journalctl for any errors popping up in the logs to determine the cause of the error.
+If you encounter any issues with the webpage not loading, delve into your `journalctl` logs to identify and troubleshoot the root cause of the error.
+
+
 
