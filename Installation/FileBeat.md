@@ -181,7 +181,20 @@ To create an API key for our Filebeat host, we'll first need to set up a user sp
      # Enter Y if you are prompted to create a keystore
      # Enter your API key in the following format id:api_key
      ```
-     
+<br>
+
+### Modules
+Modules are a simplified way of intergrating common services into filebeat that have predefined input configurations and ingest pipelines. Making it a easier to have services intergrated into filebeat to tracking specified log data that can be passed onto elastic. These modules can be found in the `/etc/filebeat/modules` directory where you can enable and configure which services and log data for each service is collected. For this lab as we'll be enabling and apache web server, we can enable that service by the following:
+  - Rename the file as apache.yml, removing the disabled EOF which will enable the file
+  - To configure the type of log data you want collected from the apache service, you can edit the file and set the log and error data to true, enabling the collection of those logs
+That service is now enabled and filebeat will start collecting the log data from that service and passing it onto elastic.
+
+### Apache Web server
+We'll be running a apache web service on our filebeats host so that we have more log data to collect and pass onto elastic. We can download/install apache with the following command:
+```
+sudo apt install apache2
+```
+We now should have apache running on our host and should be able to access the defualt web page on our port 80.
 <br><br>
 
 ## <div id="startup">🚀 Startup
@@ -213,7 +226,5 @@ sudo systemctl stop filebeat
 ```
 <br><br>
 
-
-
-##Conclusion
+## Conclusion
 Filebeat and elastic are now setup and should be communicating with each other. It may take some time for the logs to carry through from the filebeat host to the elastichost. Though eventually you should see logs come through on your filebeat-* index which you can find in the discovery tab.
