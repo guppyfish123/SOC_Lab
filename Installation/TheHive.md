@@ -246,6 +246,8 @@ journalctl -u cassandra -n 100
 ```
 To make the cassandra service start on boot, run the following:
 ```bash
+sudo systemctl daemon-reload
+sudo systemctl enable cassandra
 ```
 <br>
 
@@ -266,5 +268,9 @@ vim /var/log/thehive/application.log
 ```
 To make the thehive service start on boot, run the following:
 ```bash
+sudo systemctl daemon-reload
+sudo systemctl enable thehive
 ```
-## Conclusion 
+<br>
+TheHive should now be reachable on your host `http://YOUR_SERVER_ADDRESS:9000/` with a login page. The defualt admin user is admin@thehive.local with password secret. Which should be change once you can login.
+
