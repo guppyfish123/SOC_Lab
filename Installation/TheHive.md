@@ -1,4 +1,4 @@
-# <img align="center" src="https://seeklogo.com/images/E/elastic-beats-logo-02512BDFD2-seeklogo.com.png" height="40px" width="30px">&nbsp; The Hive
+# <img align="center" src="https://thehive-project.org/assets/ico/favicon.ico" height="45px" width="45px">&nbsp; The Hive
 For this lab, We'll be running Version: 4.1.24-1 of The Hive. For more information on The hive and see the offical documentation [link](https://docs.thehive-project.org/thehive/)
 <br>
 
