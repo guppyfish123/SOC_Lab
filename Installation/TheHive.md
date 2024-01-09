@@ -231,5 +231,40 @@ localfs.location = /opt/thp/thehive/files
 <br><br>
 
 ## <div id="startup">🚀 Startup
+###Cassandra
+Cassandra should already be running from when we installed it. We need to restart the service to apply to changes that we made ealier.
+```bash
+sudo systemctl restart cassandra 
+```
+Now to confirm that the Cassandra service is running use the following command.
+```bash
+sudo systemctl status cassandra
+```
+In the even that Cassandra fails to start, you can check the logs for any error messages with:
+```bash
+journalctl -u cassandra -n 100
+```
+To make the cassandra service start on boot, run the following:
+```bash
+```
+<br>
 
+### The Hive
+The Hive should now be ready to start with everything configured and Cassandra up and running. Use the following command to start TheHive:
+```bash
+sudo systemctl start thehive
+```
+To check that TheHive is up and running you can use:
+```bash
+sudo systemctl status thehive
+```
+In the even that thehive fails to start, you can check the logs for any error messages with:
+```bash
+journalctl -u thehive -n 100
+# Or
+vim /var/log/thehive/application.log
+```
+To make the thehive service start on boot, run the following:
+```bash
+```
 ## Conclusion 
