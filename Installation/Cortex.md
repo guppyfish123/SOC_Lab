@@ -1,12 +1,33 @@
 # <img align="center" src="https://thehive-project.github.io/Cortex-Analyzers/images/cortex-logo.png" height="45px" width="45px">&nbsp; Cortex
 
+## :books: Table Of Content
+ - [Installation](#installation)
+   - [Java](#java)
+   - [Elasticsearch](#elasticsearch)
+   - [cortex](#cortex)
+ - [Configurations](#configurations)
+   - [Elasticsearch](#elasticsearch)
+   - [cortex](#cortex)
+   - [Analyzers & Responders](#analyzers--responders) 
+ - [Startup](#startup)
+   - [Elasticsearch](#elasticsearch)
+   - [cortex](#cortex)
+   - [Account setup](#account-setup)
+   - [Analyzers & Responders](#analyzers--responders)
+   - [Security](#security)
+   - [Nginx Install](#nginx-install)
+   - [Self-Signed Certificates](#self-signed-certificates)
+   - [Nginx Configuration](#nginx-configuration)
+  
+<br>
+
 ## <div id="installation">💻 Installation
-Cortex require certain package so that the application can run, install the following packages
+Before installing Cortex, ensure that the required packages are present for the application to run. Use the following command to install these required packages:
 ```bash
 apt install wget gnupg apt-transport-https git ca-certificates ca-certificates-java curl  software-properties-common python3-pip lsb_release
 ```
 
-### java
+### Java
 ```bash
 apt install -y openjdk-11-jre-headless
 echo JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64" >> /etc/environment
@@ -32,8 +53,8 @@ apt install cortex
 <br><br>
 
 ## <div id="configurations">⚙️ Configurations
-### Elastic
-To configure elasticsearch to run on our localhost so that cortex can connect to its services, we need to edit the configuration file `/etc/elasticsearch/elasticsearch.yml` as follows:
+### Elasticsearch
+To enable Cortex to connect to Elasticsearch services, you must configure Elasticsearch to run on your localhost. Modify the configuration file located at `/etc/elasticsearch/elasticsearch.yml` with the following changes:
 ```yml
 http.host: 127.0.0.1
 transport.host: 127.0.0.1
@@ -46,7 +67,7 @@ script.allowed_types: "inline,stored"
 ```
 
 ### Cortex
-In order to connect elasticsearch to cortex, we'll need to make some changes to the configuration `/etc/cortex/application.conf` file as follows:
+To establish a connection between Elasticsearch and Cortex, you need to make adjustments to the configuration file located at `/etc/cortex/application.conf`. Follow these changes to the file:
 ```conf
 ## ElasticSearch
 search {
@@ -58,13 +79,14 @@ search {
 ```
 
 ### Analyzers & Responders
-These are the core of cortex and what will allow us to analyze & responde the data we input into cortex. 
-First though before we can download these moduels, cortex require certain packages for these modules to work. These can be downloaded with the following command: 
+Analyzers and Responders are at the core of Cortex, enabling us to analyze and respond to the data we input into the system.
+
+Before downloading these modules, Cortex requires specific packages for them to function. Use the following command to install the necessary packages:
 ```bash
 sudo apt install -y --no-install-recommends python3-pip python3-dev ssdeep libfuzzy-dev libfuzzy2 libimage-exiftool-perl libmagic1 build-essential git libssl-dev
 sudo pip3 install -U pip setuptools
 ```
-We will create a directory in our `/opt` directory to store these modules in by running the command:
+We'll create a directory in our `/opt` directory to store these modules by running the following commands:
 ```bash
 # Move to the /opt directory 
 cd /opt
@@ -75,13 +97,12 @@ git clone https://github.com/TheHive-Project/Cortex-Analyzers
 # Give permission to cortex to access/read the Cortex-Analyzers directory 
 chown -R cortex:cortex /opt/Cortex-Analyzers
 ```
-Now we can setup each module which has been mapped out in our Cortex-Analyzers directory with each module having its own requirements.txt to install them with.
+Now, let's set up each module, each of which is organized in the Cortex-Analyzers directory with its requirements.txt file. Run the following command:
 ```bash
 for I in $(find Cortex-Analyzers -name 'requirements.txt'); do sudo -H pip3 install -r $I || true; done
 ```
 > [!NOTE]
-> This download may take a while due to the large volume of modules that need to be installed.
-
+> The download may take a while due to the large volume of modules that need to be installed.
 <br>
 
 Finally we need to configure Cortex to pull from the right file path to our Analyzers & Responders in our `/etc/cortex/application.conf` and make the following changes:
@@ -115,7 +136,7 @@ responder {
 <br><br>
 
 ## <div id="startup">🚀 Startup
-Now that we have both elasticsearch and cortex installed and configured as can startup both services.
+Now that we have both Elasticsearch and Cortex installed and configured, we can startup both services.
 <br>
 
 ### Elasticsearch 
@@ -123,11 +144,11 @@ Now that we have both elasticsearch and cortex installed and configured as can s
 sudo systemctl enable elasticsearch
 sudo systemctl start elasticsearch
 ```
-To check that elasticsearch has started up without failure, use command:
+To verify that Elasticsearch has started without any issues, use the command:
 ```bash
 sudo systemctl status elasticsearch
 ```
-In event that elasticsearch fails to start, you can check the logs using:
+In the event that Elasticsearch fails to start, you can check the logs using:
 ```bash
 journalctl -u elasticsearch -n 100
 
@@ -137,16 +158,16 @@ cd /var/log/elasticsearch
 <br>
 
 ### Cortex
-Now that we have elasticsearch running we can startup cortex by using command:
+Now that Elasticsearch is running, we can startup Cortex with the following commands:
 ```bash
 sudo systemctl enable cortex
 sudo systemctl start cortex
 ```
-To check that cortex has started up without failure, use command:
+To check if Cortex has started successfully, use the command:
 ```bash
 sudo systemctl status cortex
 ```
-In event that cortex fails to start, you can check the logs using:
+If Cortex fails to start, you can examine the logs using:
 ```bash
 journalctl -u cortex -n 100
 
@@ -156,19 +177,19 @@ cd /var/log/cortex
 <br>
 
 ### Account setup 
-Thse services may take some time to start up though one they have intilized completily you should be able to reach the cortex site `http://YOUR_SERVER_ADDRESS:9001/`.
-There are just a couple more steps we need to do before we have everything ready to use:
-1. Open your browser and connect to `http://YOUR_SERVER_ADDRESS:9001/`
-2. When loading the page for the first time you'll be prompted to ***Update Database*** which will create a database in elasticsearch that were using to store all of our data for cortex.
-3. You will be ask to then create your first cortex user which will be your global administrator account.
-4. Now that we are logged into our global administrator account, we can now create our first organization by clicking the ***Add organization*** button.
-5. Within your organization we have to make our first user by clicking the ***Add User*** button. Ensure to set Roles to ***Read, Analyze, orgadmin***.
-6. Once your first user has been created for your oganization you'll need to reset the password before we can login to it. Click the ***New Password*** button to do this.
-7. Logout of your global admin account on the top right and sign into your new account that we just made
+These services may take some time to start up, but once they have initialized completely, you should be able to reach the Cortex site at `http://YOUR_SERVER_ADDRESS:9001/`.
+There are just a couple more steps we need to complete before everything is ready to use:
+Open your browser and connect to `http://YOUR_SERVER_ADDRESS:9001/`
+When loading the page for the first time, you'll be prompted to Update Database, which will create a database in Elasticsearch that we're using to store all of our data for Cortex.
+You will be asked to then create your first Cortex user, which will be your global administrator account.
+Now that we are logged into our global administrator account, we can create our first organization by clicking the ***Add Organization*** button.
+Within your organization, we need to create our first user by clicking the Add User button. Ensure to set Roles to ***Read, Analyze, orgadmin***.
+Once your first user has been created for your organization, you'll need to reset the password before you can log in. Click the ***New Password*** button to do this.
+Logout of your global admin account on the top right and sign into your new account that we just made.
+<br>
 
 ### Analyzers & Responders
-Now that we our in our organization that we have just made we are now able to access our **Analyzers & Responders** which you can enable by going to **Organization**>**Analyzers**. Listed are all installed Analyzers & Responders that we can enable as we need.
-
+Now that we are in our organization that we have just created, we can access our Analyzers & Responders, which you can enable by going to Organization > Analyzers. Listed are all the installed Analyzers & Responders that we can enable as needed.
 <br><br>
 
 ## Security 
@@ -182,7 +203,7 @@ sudo apt-get install nginx
 ```
 <br>
 
-### Self-Signed certificates 
+### Self-Signed Certificates 
 In order for us to generate a certificate and key with a Cerficiatae Authority, we'll be using `openssl`.
 <br>
 
@@ -214,7 +235,7 @@ sudo apt-get install openssl
   ```
 <br>
 
-## Nginx configuration
+## Nginx Configuration
 1. Change to `/etc/nginx/sites-available/` directory and create a file `cortex.conf` with the following code inside:
   ```conf
   server {
