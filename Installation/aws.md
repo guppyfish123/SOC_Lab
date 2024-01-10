@@ -46,3 +46,7 @@ Download: [Putty](https://www.putty.org/)
 
 You'll most likily be greeted with a pop-up warning which you can just accept. Though beside from that you have now connected to your AWS VM. 
 <br><br>
+
+## Security     
+
+To ensure that our EC2 instance remain security throughout their lifespan, we need to ensure that our inbound and outbound ports on both our firewall for our AWS instance and our ubuntu VM endpoint are set appropiatily 
