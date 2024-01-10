@@ -26,6 +26,7 @@ Before installing Cortex, ensure that the required packages are present for the 
 ```bash
 apt install wget gnupg apt-transport-https git ca-certificates ca-certificates-java curl  software-properties-common python3-pip lsb_release
 ```
+<br>
 
 ### Java
 ```bash
@@ -43,7 +44,7 @@ sudo apt install elasticsearch
 ```
 <br>
 
-### cortex
+### Cortex
 ```bash
 wget -O- "https://raw.githubusercontent.com/TheHive-Project/Cortex/master/PGP-PUBLIC-KEY"  | sudo apt-key add -
 wget -qO- https://raw.githubusercontent.com/TheHive-Project/Cortex/master/PGP-PUBLIC-KEY |  sudo gpg --dearmor -o /usr/share/keyrings/thehive-project.gpg
@@ -65,6 +66,7 @@ path.data: "/var/lib/elasticsearch"
 xpack.security.enabled: false
 script.allowed_types: "inline,stored"
 ```
+<br>
 
 ### Cortex
 To establish a connection between Elasticsearch and Cortex, you need to make adjustments to the configuration file located at `/etc/cortex/application.conf`. Follow these changes to the file:
@@ -77,6 +79,7 @@ search {
   uri = "http://127.0.0.1:9200"
 }
 ```
+<br>
 
 ### Analyzers & Responders
 Analyzers and Responders are at the core of Cortex, enabling us to analyze and respond to the data we input into the system.
@@ -177,15 +180,15 @@ cd /var/log/cortex
 <br>
 
 ### Account setup 
-These services may take some time to start up, but once they have initialized completely, you should be able to reach the Cortex site at `http://YOUR_SERVER_ADDRESS:9001/`.
-There are just a couple more steps we need to complete before everything is ready to use:
-Open your browser and connect to `http://YOUR_SERVER_ADDRESS:9001/`
-When loading the page for the first time, you'll be prompted to Update Database, which will create a database in Elasticsearch that we're using to store all of our data for Cortex.
-You will be asked to then create your first Cortex user, which will be your global administrator account.
-Now that we are logged into our global administrator account, we can create our first organization by clicking the ***Add Organization*** button.
-Within your organization, we need to create our first user by clicking the Add User button. Ensure to set Roles to ***Read, Analyze, orgadmin***.
-Once your first user has been created for your organization, you'll need to reset the password before you can log in. Click the ***New Password*** button to do this.
-Logout of your global admin account on the top right and sign into your new account that we just made.
+1. These services may take some time to start up, but once they have initialized completely, you should be able to reach the Cortex site at `http://YOUR_SERVER_ADDRESS:9001/`.
+2. There are just a couple more steps we need to complete before everything is ready to use:
+3. Open your browser and connect to `http://YOUR_SERVER_ADDRESS:9001/`
+4. When loading the page for the first time, you'll be prompted to Update Database, which will create a database in Elasticsearch that we're using to store all of our data for Cortex.
+5. You will be asked to then create your first Cortex user, which will be your global administrator account.
+6. Now that we are logged into our global administrator account, we can create our first organization by clicking the ***Add Organization*** button.
+7. Within your organization, we need to create our first user by clicking the Add User button. Ensure to set Roles to ***Read, Analyze, orgadmin***.
+8. Once your first user has been created for your organization, you'll need to reset the password before you can log in. Click the ***New Password*** button to do this.
+9. Logout of your global admin account on the top right and sign into your new account that we just made.
 <br>
 
 ### Analyzers & Responders
@@ -195,6 +198,7 @@ Now that we are in our organization that we have just created, we can access our
 ## Security 
 To ensure that our data remain safe & secure we are going to configure traffic to be sent over HTTPS. Cortex shouldn't have a built in function that does this so we are going to use a reverse proxy setup.
 We'll be using nginx to setup our reverse proxy with our cortex service to run over HTTPS.
+<br>
 
 ### Nginx Install
 To install nginx, use command:
