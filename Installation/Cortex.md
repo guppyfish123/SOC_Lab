@@ -81,6 +81,13 @@ search {
 ```
 <br>
 
+Ensuring that our host stays secure we are also going to change the defualt port that cortex runs over as to not let threat actors know what service we are running. We can do this adding the following line in our `application.conf` file.
+```conf
+http.port = 8090
+```
+
+<br>
+
 ### Analyzers & Responders
 Analyzers and Responders are at the core of Cortex, enabling us to analyze and respond to the data we input into the system.
 
@@ -180,15 +187,15 @@ cd /var/log/cortex
 <br>
 
 ### Account setup 
-1. These services may take some time to start up, but once they have initialized completely, you should be able to reach the Cortex site at `http://YOUR_SERVER_ADDRESS:9001/`.
-2. There are just a couple more steps we need to complete before everything is ready to use:
-3. Open your browser and connect to `http://YOUR_SERVER_ADDRESS:9001/`
-4. When loading the page for the first time, you'll be prompted to Update Database, which will create a database in Elasticsearch that we're using to store all of our data for Cortex.
-5. You will be asked to then create your first Cortex user, which will be your global administrator account.
-6. Now that we are logged into our global administrator account, we can create our first organization by clicking the ***Add Organization*** button.
-7. Within your organization, we need to create our first user by clicking the Add User button. Ensure to set Roles to ***Read, Analyze, orgadmin***.
-8. Once your first user has been created for your organization, you'll need to reset the password before you can log in. Click the ***New Password*** button to do this.
-9. Logout of your global admin account on the top right and sign into your new account that we just made.
+These services may take some time to start up, but once they have initialized completely, you should be able to reach the Cortex site at `http://YOUR_SERVER_ADDRESS:8090/`.
+There are just a couple more steps we need to complete before everything is ready to use:
+1. Open your browser and connect to `http://YOUR_SERVER_ADDRESS:8090/`
+2. When loading the page for the first time, you'll be prompted to Update Database, which will create a database in Elasticsearch that we're using to store all of our data for Cortex.
+3. You will be asked to then create your first Cortex user, which will be your global administrator account.
+4. Now that we are logged into our global administrator account, we can create our first organization by clicking the ***Add Organization*** button.
+5. Within your organization, we need to create our first user by clicking the Add User button. Ensure to set Roles to ***Read, Analyze, orgadmin***.
+6. Once your first user has been created for your organization, you'll need to reset the password before you can log in. Click the ***New Password*** button to do this.
+7. Logout of your global admin account on the top right and sign into your new account that we just made.
 <br>
 
 ### Analyzers & Responders
@@ -275,7 +282,7 @@ sudo apt-get install openssl
   
       location / {
           add_header              Strict-Transport-Security "max-age=31536000; includeSubDomains";
-          proxy_pass              http://127.0.0.1:9001/;
+          proxy_pass              http://127.0.0.1:8090/;
           proxy_http_version      1.1;
           proxy_set_header        Upgrade $http_upgrade;
           proxy_set_header        Connection 'upgrade';
@@ -306,3 +313,26 @@ sudo apt-get install openssl
   sudo systemctl reload nginx
   ```
 7. Cortex should now be accessable on `https://YOUR_SERVER_ADDRESS`
+
+### Close port 8090 
+As we now have our reverse proxy setup to redirect cortex through port 443 for secure encryption, port 8090 is still open. To ensure we leave no unnecessary ports open we are going to add a rule to our internal Iptable on our ubuntu host to redirect all traffic from *:8090 to 127.0.0.1:8090. This will ensure that our reverse proxy will still function, while at the same time no users can access cortex through port 8090.
+Use the following command to make the necessary changes to your IPTable:
+```bash
+# Allow loopback interface
+sudo iptables -A INPUT -i lo -j ACCEPT
+
+# Allow incoming connections to port 8090 from localhost
+sudo iptables -A INPUT -p tcp --dport 8090 -s 127.0.0.1 -j ACCEPT
+
+# Drop all other incoming connections to port 8090
+sudo iptables -A INPUT -p tcp --dport 8090 -j DROP
+```
+To save these changes that we have made so that on reboot they are not lost, use command:
+```bash
+# Save the rules
+sudo sh -c "iptables-save > /etc/iptables.rules"
+
+# Restore the rules during startup
+sudo sh -c "iptables-restore < /etc/iptables.rules"
+```
+
