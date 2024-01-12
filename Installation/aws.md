@@ -49,4 +49,39 @@ You'll most likily be greeted with a pop-up warning which you can just accept. T
 
 ## Security     
 
-To ensure that our EC2 instance remain security throughout their lifespan, we need to ensure that our inbound and outbound ports on both our firewall for our AWS instance and our ubuntu VM endpoint are set appropiatily 
+
+
+### Security Groups
+To ensure that our EC2 instance remain security throughout their lifespan, we need to ensure that our inbound and outbound ports for our security group attachec to our instance are following least privilaged. Meaning that they only have the ports opne that they need to, in order to operate and conduct their day to day functions. The ports that you have open will depend on the services that you have running on a host at any time and as such each security group needs to be configured manually for ensure that they remain secure.
+<br>
+In our lab one of our core host is our elastic instance, running elasticsearch and kibana. Taking this host as an example, we'll run through what ports should be open in our security group and why.
+First we need to look at what services are running on our host, which services need to access remotily, and what ports are they using. For our elastic host they are:
+- ElasticSearch: Running on port 6900 (Only needs to be accessed internally on VPC)
+- Kibana: Running on port 5601 
+- SSH: Running on port 22 (Only Needs to be accessed from my IP)
+<br>
+Now that we know that services that are running on our host, the ports that they are running on, and whether they need to be access publicly. We can set our inbound and outbound rules for our security group.
+<br>
+**Inbound Rules**<br>
+
+|     TYPE     |      PORT      |     SOURCE    |
+| :---         |     :---:      |          ---: |
+|      TCP     |      5601      |   0.0.0.0/0   |
+|      TCP     |      5601      |     ::/0      |
+|      TCP     |      6900      | 172.31.0.0/16 |
+|      SSH     |       22       |180.150.80.0/22|
+<br>
+**Outbound Rules**<br>
+
+|     TYPE     |      PORT      |     SOURCE    |
+| :---         |     :---:      |          ---: |
+|      TCP     |      5601      |   0.0.0.0/0   |
+|      TCP     |      5601      |     ::/0      |
+|      TCP     |      6900      | 172.31.0.0/16 |
+|      SSH     |       22       |180.150.80.0/22|
+
+> [!NOTE]
+> I have restricted SSH down to by personal Private IP subnet, idealily you would want it to be a dedicated IP. Though due my setup with my ISP not having a static IP assigned to me. It would be something that would have to updated regularily due to most ISPs running on a dynamic Ip assignment to your home network.
+
+### Patch Manager
+Following best practises, keeping your machines up to date with the latest security patches is crucial in maintaning our secure environment. Patch Manager is a aws service that enables you to setup regular compliance checks with set policies on patches for your host that you have running. Patch Manager can ensure that devices are checked regular to ensure that are running the latest version for their OS and there applications
