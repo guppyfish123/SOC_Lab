@@ -21,6 +21,11 @@
   
 <br>
 
+## <img align="center" src="https://files.softicons.com/download/social-media-icons/free-social-media-icons-by-uiconstock/png/512x512/AWS-Icon.png" height="33px" width="33px">&nbsp;  AWS
+To kick off, the first step is to launch a virtual machine (VM) to host our Cortex services. In this guide, I'll be using an AWS EC2 Ubuntu instance for this purpose. However, feel free to choose any cloud or on-premises service that suits your preferences. If you're unfamiliar with setting up a VM on AWS, you can follow a step-by-step walkthrough provided [here](./aws).
+
+<br>
+
 ## <div id="installation">💻 Installation
 Before installing Cortex, ensure that the required packages are present for the application to run. Use the following command to install these required packages:
 ```bash
@@ -313,6 +318,7 @@ sudo apt-get install openssl
   sudo systemctl reload nginx
   ```
 7. Cortex should now be accessable on `https://YOUR_SERVER_ADDRESS`
+<br><br>
 
 ### Close port 8090 
 As we now have our reverse proxy setup to redirect cortex through port 443 for secure encryption, port 8090 is still open. To ensure we leave no unnecessary ports open we are going to add a rule to our internal Iptable on our ubuntu host to redirect all traffic from *:8090 to 127.0.0.1:8090. This will ensure that our reverse proxy will still function, while at the same time no users can access cortex through port 8090.
@@ -335,4 +341,10 @@ sudo sh -c "iptables-save > /etc/iptables.rules"
 # Restore the rules during startup
 sudo sh -c "iptables-restore < /etc/iptables.rules"
 ```
+<br>
+> [!NOTE]
+> While this step might seem unnecessary since we already have security groups assigned to each of our instances, managing open ports individually adds an extra layer of security. Even though we control open ports through security groups, it's always good practice to ensure that no ports are left unchecked. This approach aligns with best practices for comprehensive security measures.
+<br><br>
 
+### Security groups
+In AWS, managing security groups is crucial to control incoming and outgoing traffic to maintain a secure environment. Adhering to the principle of least privilege ensures that only the necessary ports are open for the operation and maintenance of the host and its services. For detailed instructions on configuring security groups in AWS, refer to [GUIDE](./aws).
