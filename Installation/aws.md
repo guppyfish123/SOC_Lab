@@ -1,18 +1,26 @@
 # <img align="center" src="https://files.softicons.com/download/social-media-icons/free-social-media-icons-by-uiconstock/png/512x512/AWS-Icon.png" height="45px" width="45px">&nbsp;  AWS
-To get Elastic up and running, our first step is to set up a server, and AWS is the go-to platform for VMs. While you're free to choose any platform, AWS is highly recommended due to its popularity and reliability. If you're looking for cost-effective options, check out these Cheap VM Hostings. Keep in mind that this might be the only part of the lab where some expenses could be involved.
+While you're free to choose any platform, AWS is highly recommended due to its popularity and reliability. If you're looking for cost-effective options, check out these Cheap VM Hostings. Keep in mind that this might be the only part of the lab where some expenses could be involved.
 [Cheap VM Hostings](https://webhostingadvices.com/19-cheap-vm-hosting/).
 If you lack experience with major cloud providers (AWS, Azure, Google), this is an excellent opportunity to dive into one of them.
 <br><br>
 ## ☁️ AWS Setup Instructions
 1. Navigate to the EC2 Dashboard on AWS and select ***Launch Instance***.
-2. Give your VM a meaningful name under ***Name and tags***. For example, I'll name mine Elastic_Ubuntu.
+2. Give your VM a meaningful name under ***Name and tags***.
 
 > [!TIP]
 > Stick to a Naming Convention for clarity and future reference.
 
 3. Under ***Application and OS Images***, choose Ubuntu as the OS and leave other configurations as default.
-4. Move to ***Instance type*** to specify your specs. While Elastic can run on T2.Medium, T2.Large is recommended for smoother performance.
-5. Set up a key for login under ***Key pair***. Click Create new key pair.
+4. Move to ***Instance type*** to specify your specs.
+    |     Host    | Instance type  |                        
+    |     :---:   |      :---:     |
+    |   Elastic   |T2.medium <br> (Best performance) <br> T2.Large|
+    |   TheHive   |    T2.medium   |
+    |   Cortex    |    T2.medium   |
+    |   Filebeat  |    T2.small    |
+    |   Shuffle   |    T2.medium   |
+    |Windows-Endpoint|  T2.medium  |
+6. Set up a key for login under ***Key pair***. Click Create new key pair.
     - Provide a ***Key pair name***, keeping it consistent with your server name.
     - ***Key pair type*** can be left as default (RSA).
     - Choose the ***Private key file format*** depending on your preference (e.g., .ppk for Putty).
@@ -21,8 +29,8 @@ If you lack experience with major cloud providers (AWS, Azure, Google), this is 
 > [!CAUTION]
 > Double-check your private key installation, as it cannot be regenerated once the instance is created.
 
-6. In ***Network settings***, leave the default settings for Create Security Group and Allow SSH traffic from selected. Later, we'll modify these to reach the Elastic web page, avoiding unnecessary open ports.
-7. In ***Configure storage***, set the storage to 15 GiBs, with the option to add more volumes later if needed.
+6. In ***Network settings***, leave the default settings for Create Security Group and Allow SSH traffic from selection. We will modify this later.
+7. In ***Configure storage***, set the storage to 15 GiBs(For ubuntu), with the option to add more volumes later if needed.
 8. ***Advanced details*** can be left as default.
 9. Review your summary and ensure under ***Number of instances***, only 1 instance is being created.
 10. Deploy your instance by clicking ***Launch Instance***.<br><br>
@@ -92,3 +100,13 @@ Following best practises, keeping your machines up to date with the latest secur
 Patch Manager can bet setup in the AWS Systems Manager > Patch Manager > Dashboard. Here we will create a new patch policy by clicking ***Create Patch Policy*** and set your desired parameters in occurance, to install or just scan, instances to include, and which policies to apply for each OS. For my patch policy I applied the stanard OS policy and set to to scan & install any updates found for all instances every 2nd thursday (cron(18 0 ? * THU#2 *)). Scans can also be done manually during any time for a selected group of instances or all.
 <br><br>
 
+**user data**
+In addition to employing patch management while instances are running, we can enhance the maintenance process by including a startup command in the User Data for our instances. The User Data is a script or cloud-init metadata that can be provided to an EC2 instance during launch. By adding a bash script, we can automate tasks to be executed on every boot.
+<br>
+Here's an example of a simple bash script in User Data:
+```bash
+#!/bin/bash
+apt update -y
+apt upgrade -y
+```
+By incorporating such scripts into User Data, we streamline the process of keeping our instances up to date from the moment they are launched. It's a proactive approach to maintaining system health and security by automatically applying updates as soon as the instance becomes operational.
