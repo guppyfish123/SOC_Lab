@@ -19,7 +19,7 @@ export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 TheHive required version 3.11.x of Cassandra for it to run. To download/install Cassandra, run the following command:
 ```bash
 curl -fsSL https://www.apache.org/dist/cassandra/KEYS | sudo apt-key add -
-echo "deb http://www.apache.org/dist/cassandra/debian 311x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
+echo "deb http://archive.apache.org/dist/cassandra/debian 311x main" | sudo tee -a /etc/apt/sources.list.d/cassandra.sources.list
 sudo apt update
 sudo apt install cassandra
 ```
