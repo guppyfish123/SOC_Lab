@@ -94,6 +94,8 @@ Now that we have identified the services, associated ports, and their accessibil
 > [!NOTE]
 > SSH access has been restricted to my personal Private IP subnet. Ideally, it would be set to a dedicated IP. However, due to my ISP's dynamic IP assignment to my home network, regular updates would be required.
 
+<br>
+
 ### Patch Manager
 Following best practises, keeping your machines up to date with the latest security patches is crucial in maintaning our secure environment. Patch Manager is a aws service that enables you to setup regular compliance checks with set policies on patches for your host that you have running. Patch Manager can ensure that devices are checked regularly to ensure that are running the latest version for their OS and there applications.
 <br><br>
@@ -110,3 +112,14 @@ apt update -y
 apt upgrade -y
 ```
 By incorporating such scripts into User Data, we streamline the process of keeping our instances up to date from the moment they are launched. It's a proactive approach to maintaining system health and security by automatically applying updates as soon as the instance becomes operational.
+
+<br>
+
+### Secrets Manager
+Secrets Manager is an aws services which helps users in managing and retrieving credentials such as API keys, OAuth tokens and application credentails. Improving overall security posture as note to have sensitive information hard coded into application configurations files in your host. 
+<br>
+As an example we'll make a Secret to store our credentials for one of Cassandra Services
+1. To create a secret, go to your AWS Secrets Manager in aws. Here we can create our secret by clicking the ***Store a new secret*** button.
+2. First select the type of secret you want to store under ***Secret Type***. We'll select ***Other***.
+3. In ***Key/value pairs*** we can make two rows, one for our username and password. Enter in a key and value format (e.g. Username: Cassandra).
+4.      
