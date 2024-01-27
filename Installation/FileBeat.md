@@ -5,17 +5,42 @@ In this lab, we'll leverage Filebeat version 8.11. Refer to the official [Filebe
 > Ensure consistency by using the same version of Filebeat as your Elasticsearch and Kibana on the other host.
 <br>
 
+## :books: Table Of Content
+ - [Installation](#installation)
+   - [Install Filebeat](#install-filebeat)
+ - [Configurations](#configurations)
+   - [Input](#input)
+   - [Modules](#fmodules)
+   - [Dashboard](#dashboard)
+   - [Kibana Setup](#kibana-setup)
+   - [Elasticsearch Output](#elasticsearch-output)
+   - [API Key](#api-key)
+   - [Enabled Modules](#enabled-modules)
+   - [Apache Web Server](#apache-web-server)
+ - [Startup](#startup)
+
+<br>
+
 ## Introduction
 In this part of the lab, we'll set up a host running a default Apache website with Filebeat installed. This host will seamlessly connect to our Kibana and Elasticsearch instances, becoming the conduit for capturing real-world traffic from the public internet.
 
 This process allows us to feed valuable data into our Elastic SIEM, providing a practical and hands-on experience in the realm of security operations.
+<br>
 
-### VM Setup
-First thing, we need a Virtual Machine (VM) to host our filebeat and our web server. I'll be utilizing a T2.small instance in aws, which will serve as a primary host throughout this lab.
-If you're unfamiliar with setting up a VM in AWS, I've provided a handy mini-tutorial [here](./aws). It guides you through the process, ensuring you're ready to launch your AWS instance seamlessly.
-<br><br>
+## <img align="center" src="https://files.softicons.com/download/social-media-icons/free-social-media-icons-by-uiconstock/png/512x512/AWS-Icon.png" height="33px" width="33px">&nbsp;  AWS
+To kick off, the first step is to launch a virtual machine (VM) to host our Cortex services. In this guide, I'll be using an AWS EC2 Ubuntu instance for this purpose. However, feel free to choose any cloud or on-premises service that suits your preferences. If you're unfamiliar with setting up a VM on AWS, you can follow a step-by-step walkthrough provided [here](./aws).
+
+<br>
 
 ## <div id="installation">💻 Installation
+### Update Machine
+Before diving into Cortex installation, let's ensure our machine is up to date:
+```bash
+Sudo apt update && sudo apt upgrade -y
+```
+<br>
+
+### Install Filebeat
 To install filebeat, use the following command:
 ```bash
 curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.11.3-amd64.deb
@@ -35,7 +60,7 @@ sudo vim /etc/filebeat/filebeat.yml
 ```
 <br>
 
-### Filebeat input 
+### Input 
 This section defines the inputs for Filebeat, specifying which logs it will capture and forward to our Elasticsearch instance. While many inputs are covered by modules, this manual method is employed for logs located in the `/var/log` directory.
    
 ```yml
@@ -50,7 +75,7 @@ filebeat.inputs:
 ```
 <br>
 
-### Filebeat modules
+### Modules
 Modules are crucial for determining the logs to be collected. Filebeat comes with several pre-installed modules for popular services, making it efficient to choose and enable specific services for log capture and forwarding to Elasticsearch.
 ```yml
 # ============================== Filebeat modules ==============================
@@ -117,7 +142,6 @@ output.elasticsearch:
 <br>
 
 ### API Key 
-
 To create an API key for our Filebeat host, we'll first need to set up a user specifically for the purpose of uploading logs to Elasticsearch with the minimum permissions, following the principle of least privilege.
 
 1. **Create New User:**
@@ -183,13 +207,19 @@ To create an API key for our Filebeat host, we'll first need to set up a user sp
      ```
 <br>
 
-### Modules
+> [!WARNING]
+> As API keys are highly senetive in neature it is always best practise to not store them locally and instead store them in a externally managed vault. AWS Secrets Manager is a perfect service for these types of situations, here is a quick guide on how to setup them up with your EC2 instances [Link](./aws)
+
+<br>
+
+### Enabled Modules
 Modules are a simplified way of intergrating common services into filebeat that have predefined input configurations and ingest pipelines. Making it a easier to have services intergrated into filebeat to tracking specified log data that can be passed onto elastic. These modules can be found in the `/etc/filebeat/modules` directory where you can enable and configure which services and log data for each service is collected. For this lab as we'll be enabling and apache web server, we can enable that service by the following:
   - Rename the file as apache.yml, removing the disabled EOF which will enable the file
   - To configure the type of log data you want collected from the apache service, you can edit the file and set the log and error data to true, enabling the collection of those logs
 That service is now enabled and filebeat will start collecting the log data from that service and passing it onto elastic.
+<br>
 
-### Apache Web server
+### Apache Web Server
 We'll be running a apache web service on our filebeats host so that we have more log data to collect and pass onto elastic. We can download/install apache with the following command:
 ```
 sudo apt install apache2
@@ -198,29 +228,26 @@ We now should have apache running on our host and should be able to access the d
 <br><br>
 
 ## <div id="startup">🚀 Startup
-To configure Filebeat so that it starts automatically on boot, run the following command:
+1.To configure Filebeat so that it starts automatically on boot, run the following command:
 ```bash
 sudo /bin/systemctl daemon-reload
 sudo /bin/systemctl enable filebeat
 ```
-Filebeat can now be started using the following:
+2. Filebeat can now be started using the following:
 ```bash
 sudo systemctl start filebeat
 ```
-
-To check that filebeat is running and startup hasn't failed, use the following command:
+3. To check that filebeat is running and startup hasn't failed, use the following command:
 ```bash
 sudo systemctl status filebeat
 ```
-
-In the event that filebeat fails to start, use the following commands to look at the logs to determine the reason:
+4. In the event that filebeat fails to start, use the following commands to look at the logs to determine the reason:
 ```bash
 journalctl -u filebeat -n 50
 
 # -n is the number of line you want to print out
 ```
-
-To stop filebeat at any point while running, use the following command:
+6. To stop filebeat at any point while running, use the following command:
 ```bash
 sudo systemctl stop filebeat
 ```
