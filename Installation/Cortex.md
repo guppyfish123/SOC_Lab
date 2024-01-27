@@ -27,7 +27,14 @@ To kick off, the first step is to launch a virtual machine (VM) to host our Cort
 <br>
 
 ## <div id="installation">💻 Installation
-Before installing Cortex, ensure that the required packages are present for the application to run. Use the following command to install these required packages:
+### Update Machine
+Before diving into Cortex installation, let's ensure our machine is up to date:
+```bash
+Sudo apt update && sudo apt upgrade -y
+```
+<br>
+
+Cortex requiries certain packages that need to be installed on the host before installation. Use the following command to install these required packages:
 ```bash
 apt install wget gnupg apt-transport-https git ca-certificates ca-certificates-java curl  software-properties-common python3-pip lsb_release
 ```
@@ -96,58 +103,59 @@ http.port = 8090
 ### Analyzers & Responders
 Analyzers and Responders are at the core of Cortex, enabling us to analyze and respond to the data we input into the system.
 
-Before downloading these modules, Cortex requires specific packages for them to function. Use the following command to install the necessary packages:
-```bash
-sudo apt install -y --no-install-recommends python3-pip python3-dev ssdeep libfuzzy-dev libfuzzy2 libimage-exiftool-perl libmagic1 build-essential git libssl-dev
-sudo pip3 install -U pip setuptools
+1. Before downloading these modules, Cortex requires specific packages for them to function. Use the following command to install the necessary packages:
+ ```bash
+ sudo apt install -y --no-install-recommends python3-pip python3-dev ssdeep libfuzzy-dev libfuzzy2 libimage-exiftool-perl libmagic1 build-essential git libssl-dev
+ sudo pip3 install -U pip setuptools
+ ```
+2. We'll create a directory in our `/opt` directory to store these modules by running the following commands:
+ ```bash
+ # Move to the /opt directory 
+ cd /opt
+ 
+ # Download the Analyzers & Responders modules from github 
+ git clone https://github.com/TheHive-Project/Cortex-Analyzers
 ```
-We'll create a directory in our `/opt` directory to store these modules by running the following commands:
-```bash
-# Move to the /opt directory 
-cd /opt
-
-# Download the Analyzers & Responders modules from github 
-git clone https://github.com/TheHive-Project/Cortex-Analyzers
-
-# Give permission to cortex to access/read the Cortex-Analyzers directory 
-chown -R cortex:cortex /opt/Cortex-Analyzers
-```
-Now, let's set up each module, each of which is organized in the Cortex-Analyzers directory with its requirements.txt file. Run the following command:
-```bash
-for I in $(find Cortex-Analyzers -name 'requirements.txt'); do sudo -H pip3 install -r $I || true; done
-```
+3. Now, let's set up each module, each of which is organized in the Cortex-Analyzers directory with its requirements.txt file. Run the following command:
+ ```bash
+ for I in $(find Cortex-Analyzers -name 'requirements.txt'); do sudo -H pip3 install -r $I || true; done
+ ```
 > [!NOTE]
 > The download may take a while due to the large volume of modules that need to be installed.
 <br>
 
-Finally we need to configure Cortex to pull from the right file path to our Analyzers & Responders in our `/etc/cortex/application.conf` and make the following changes:
-```bash
-[..]
-analyzer {
-  urls = [
-    "/opt/Cortex-Analyzers/analyzer",
-  ]
-
-  fork-join-executor {
-    parallelism-min = 2
-    parallelism-factor = 2.0
-    parallelism-max = 4
-  }
-}
-
-responder {
-  urls = [
-    "/opt/Cortex-Analyzers/responders"
-  ]
-
-  fork-join-executor {
-    parallelism-min = 2
-    parallelism-factor = 2.0
-    parallelism-max = 4
-  }
-}
-[..]
-```
+4. Update the permission to the `Cortex-Analyzers` directory so that cortex can access the file within it:
+ ```bash
+ chown -R cortex:cortex /opt/Cortex-Analyzers
+ ```
+5.Finally we need to configure Cortex to pull from the right file path to our Analyzers & Responders in our `/etc/cortex/application.conf` and make the following changes:
+ ```bash
+ [..]
+ analyzer {
+   urls = [
+     "/opt/Cortex-Analyzers/analyzer",
+   ]
+ 
+   fork-join-executor {
+     parallelism-min = 2
+     parallelism-factor = 2.0
+     parallelism-max = 4
+   }
+ }
+ 
+ responder {
+   urls = [
+     "/opt/Cortex-Analyzers/responders"
+   ]
+ 
+   fork-join-executor {
+     parallelism-min = 2
+     parallelism-factor = 2.0
+     parallelism-max = 4
+   }
+ }
+ [..]
+ ```
 <br><br>
 
 ## <div id="startup">🚀 Startup
