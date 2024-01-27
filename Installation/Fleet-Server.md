@@ -1,6 +1,32 @@
 <h1 align=center><img align="center" src="https://www.elastic.co/apple-icon-57x57.png" height="45px" width="45px">&nbsp; Fleet Server</h1>
 
-## <div id="installation">💻 Installation
+## :books: Table Of Content
+ - [Installation](#installation)
+   - [Java](#java)
+   - [Elasticsearch](#elasticsearch)
+   - [cortex](#cortex)
+ - [Configurations](#configurations)
+   - [Elasticsearch](#elasticsearch)
+   - [cortex](#cortex)
+   - [Analyzers & Responders](#analyzers--responders) 
+ - [Startup](#startup)
+   - [Elasticsearch](#elasticsearch)
+   - [cortex](#cortex)
+   - [Account setup](#account-setup)
+   - [Analyzers & Responders](#analyzers--responders)
+   - [Security](#security)
+   - [Nginx Install](#nginx-install)
+   - [Self-Signed Certificates](#self-signed-certificates)
+   - [Nginx Configuration](#nginx-configuration)
+  
+<br>
+
+## <img align="center" src="https://files.softicons.com/download/social-media-icons/free-social-media-icons-by-uiconstock/png/512x512/AWS-Icon.png" height="33px" width="33px">&nbsp;  AWS
+To kick off, the first step is to launch a virtual machine (VM) to host our Cortex services. In this guide, I'll be using an AWS EC2 Ubuntu instance for this purpose. However, feel free to choose any cloud or on-premises service that suits your preferences. If you're unfamiliar with setting up a VM on AWS, you can follow a step-by-step walkthrough provided [here](./aws).
+
+<br>
+
+## <div id="installation">💻 Fleet Sever Setup
 Open up your elastic webpage and navage down to Management > Fleet > Settings.
 
 ### Output 
@@ -75,9 +101,16 @@ Since we're running our elastic instance over TLS to ensure secure communication
    ```
 <br>
 
-###Install Elast-Agent
-Going back to our `elastic-fleet.sh`, where we had kept our enrollment/setup command for our fleet server. We can now add in the details to our Certificates we just transfered over to our host.
-Once complete we can now run our file `./elastic-fleet.sh` which will install elastic-agent and enroll the host as our fleet server in our elastic instance.
-Going back to our elastic page now we should see our fleet server now popup as one of our agents.
+### Update Machine
+Ensure that before we run our installation script that our host is up to date:
+```bash
+Sudo apt update && sudo apt upgrade -y
+```
+<br>
+
+### Run Install Script
+Going back to our fleet server host, navagate over where you stored `elastic-fleet.sh` file. We can now add in the details to our Certificates we just transfered over to our host.
+Once completed we can now run our script `./elastic-fleet.sh` which will install elastic-agent and enroll the host as our fleet server in our elastic instance.
+Going back to our elastic page, we should now see our fleet server now popup as one of our agents.
 
 
