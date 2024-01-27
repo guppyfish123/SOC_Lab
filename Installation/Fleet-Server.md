@@ -1,24 +1,18 @@
-<h1 align=center><img align="center" src="https://www.elastic.co/apple-icon-57x57.png" height="45px" width="45px">&nbsp; Fleet Server</h1>
-
+# <img align="center" src="https://www.elastic.co/apple-icon-57x57.png" height="45px" width="45px">&nbsp; Fleet Server
 ## :books: Table Of Content
- - [Installation](#installation)
-   - [Java](#java)
-   - [Elasticsearch](#elasticsearch)
-   - [cortex](#cortex)
- - [Configurations](#configurations)
-   - [Elasticsearch](#elasticsearch)
-   - [cortex](#cortex)
-   - [Analyzers & Responders](#analyzers--responders) 
- - [Startup](#startup)
-   - [Elasticsearch](#elasticsearch)
-   - [cortex](#cortex)
-   - [Account setup](#account-setup)
-   - [Analyzers & Responders](#analyzers--responders)
-   - [Security](#security)
-   - [Nginx Install](#nginx-install)
+ - [Fleet Sever Setup](#fleet-sever-setup)
+   - [Output](#output)
+   - [Add Fleet Server](add-fleet-server)
    - [Self-Signed Certificates](#self-signed-certificates)
-   - [Nginx Configuration](#nginx-configuration)
-  
+   - [Update Machine](#update-machine)
+   - [Run Installation Script](#run-installation-script)
+ - [Window Agent setup](#window-agent-setup)
+   - [Agent Policy](#agent-policy)
+   - [Add Intergration](#add-intergration)
+   - [Add Windows Agent](#add-windows-agent)
+   - [Self Signed Certificate](#self-signed-certificate)
+   - [Install Agent](#install-agent)
+
 <br>
 
 ## <img align="center" src="https://files.softicons.com/download/social-media-icons/free-social-media-icons-by-uiconstock/png/512x512/AWS-Icon.png" height="33px" width="33px">&nbsp;  AWS
@@ -26,7 +20,7 @@ To kick off, the first step is to launch a virtual machine (VM) to host our Cort
 
 <br>
 
-## <div id="installation">💻 Fleet Sever Setup
+## <div id="fleet-sever-setup">💻 Fleet Sever Setup
 Open up your elastic webpage and navage down to Management > Fleet > Settings.
 
 ### Output 
@@ -108,9 +102,61 @@ Sudo apt update && sudo apt upgrade -y
 ```
 <br>
 
-### Run Install Script
+### Run Installation Script
 Going back to our fleet server host, navagate over where you stored `elastic-fleet.sh` file. We can now add in the details to our Certificates we just transfered over to our host.
 Once completed we can now run our script `./elastic-fleet.sh` which will install elastic-agent and enroll the host as our fleet server in our elastic instance.
 Going back to our elastic page, we should now see our fleet server now popup as one of our agents.
 
+<br><br>
+
+## <div id="window-agent-setup">⚙️ Window Agent Setup 
+Now that we have our Elastic Fleet server up and running we can start to intergrating our endpoints (agents).
+<br>
+
+### Agent Policy 
+A policy is terms of Elastic Fleet is a collection of configurations and settings for the type of log data you want to collect from your agents. Making it easier for intergrating large volumes of endpointst that you want to have configured the same.
+<br>
+1. To make our first fleet policy, open up your elastic web page and navagate to your ***Fleet*** management tab. Under ***Agent Policies*** click on the ***Create Agent Policy*** button.
+2. Name your policy ***Windows-Agent-Policy*** and tick ***Collect System Logs and Metrics***
+3. Under Advance options add a description of ***Core Windows Agent Policy***
+4. ***Defualt Namespace*** set to ***Windows*** and remove ***default***
+5. Tick both ***Collect Agent Logs*** & ***Collect Agent Metrics*** under ***Agent Monitoring***
+6. Enable ***Agent Tamper Protection***
+7. Leave all other options as defualt and click ***Create Agent Policy***
+<br>
+
+### Add Intergration 
+Opening up your newly created Agent Policy we will now need to add some integrations to our policy depending on what exactly we want to capture and report on our endpoints.
+As we are intergation a windows endpoint these are the intergration optoins we'll be using:
+- Elastic Defend
+- Windows
+The Defualt configurations for both of these intergrations will do for now and can be changed later if needed.
+<br>
+
+### Add Windows Agent
+Aftering creating our windows policy we can now add our windows endpoint as an agent of our elastic fleet. 
+1. In the ***Agent*** tab in ***Fleet***, click ***Add Agent***
+2. Select the policy that we just made under ***What type of host are you adding?***
+3. Set ***Enroll in Fleet?*** as ***Entroll in Fleet***
+4. Under ***Install Elastic Agent on your host*** elastic should have a preconfigured command to enroll you windows endpoint to fleet.
+ ```bash
+ curl -L -O https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-8.11.3-linux-x86_64.tar.gz
+ tar xzvf elastic-agent-8.11.3-linux-x86_64.tar.gz
+ cd elastic-agent-8.11.3-linux-x86_64
+ sudo ./elastic-agent install --url=https://172.31.13.161:8220 \
+ --enrollment-token=ejRYQXpvd0JiTmhaSmhueGxONkc6WTg2LVUwN0NScHVGcnBudEx0bWEwUQ== \
+ --certificate-authorities=<PATH_TO_CA> \
+ --fleet-server-es-ca=<PATH_TO_CA_ES_CERT>
+ ```
+5. Over on your windows host make a file called `fleet-agent-install.sh` and paste the code into the file to be edited for later
+<br>
+
+### Self Signed Certificate
+As we are running our elastic instance over self signed certificates to secure lab. We'll need to copy over a instance of our CA certificate onto our window host to use.
+<br>
+
+### Install Agent 
+Now that we have our CA certificate on our windows host we can edit our `fleet-agent-install.sh` file with our location of our certificate. 
+Once completed we can run our script to install/setup our windows agent with our fleet server `./fleet-agent-install.sh`.
+Back over on our elastic webpage we should now be able to see our new window agent on our fleet ***agent*** listings.
 
