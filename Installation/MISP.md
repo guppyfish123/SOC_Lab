@@ -1,13 +1,24 @@
 # <img align="center" src="https://docs.sekoia.io/assets/playbooks/library/misp.png" height="40px" width="40px"> &nbsp; MISP
+## :books: Table Of Content
+ - [Installation](#installation)
+ - [Configurations](#configurations)
+   - [Make our Organisation](#make-our-organisation)
+   - [Creating a User](#creating-a-user)
+   - [Feeds](#feeds)
 
-<br><br>
+
+<br>
+
+## <img align="center" src="https://files.softicons.com/download/social-media-icons/free-social-media-icons-by-uiconstock/png/512x512/AWS-Icon.png" height="33px" width="33px">&nbsp;  AWS
+To kick off, the first step is to launch a virtual machine (VM) to host our MISP services. In this lab, I'll be using an AWS EC2 instance runnning a ubuntu OS. However, feel free to choose any cloud or on-premises services that suits your preferences. If you're unfamiliar with setting up a VM on AWS, you can follow a step-by-step walkthrough provided [here](./aws).
+
+<br>
+<br>
 
 ## <div id="installation">💻 Installation
-Make sure your host is up to date by running the following commands:
-
+To start off we'll make sure that our host is up to date by running the command:
 ```bash
-sudo apt update -y
-sudo apt upgrade -y
+sudo apt update -y && sudo apt upgrade -y
 ```
 <br>
 
@@ -18,7 +29,7 @@ wget --no-cache -O /tmp/INSTALL.sh https://raw.githubusercontent.com/MISP/MISP/2
 ```
 <br>
 
-MISP provides an installation script that automates the process and downloads all required packages. Execute the following commands to run the script:
+MISP provides an installation script installs and setup MISP and the required packages and services for us. Execute the following commands to run the script:
 ```bash
 # Running this command will tell us the download options
 bash /tmp/INSTALL.sh
@@ -38,8 +49,8 @@ We should now be able to access MISP by going to `https:\\*Public-IP*` and login
 username: admin@admin.test
 password: admin
 ```
-<br>
 When logging in for the first time, misp we prompt up to change the defualt password to the admin account.
+<br>
 
 ### Make our Organisation 
 In order for us to make our first organisation, go to Administration > Add Organisation. 
@@ -68,6 +79,24 @@ https://github.com/MISP/MISP/blob/2.4/app/files/feed-metadata/defaults.json
 Now that we have our feeds listed we can enable the ones we want by select them on the left hand side and click ***Enable Selected***. 
 Once you have enable the feeds that you want selected you need to fetch the data from them by clicking the blue ***Fetch and Store all Feed Data*** Button.
 To confirm that our feeds are syncing to MISP you can go to Administration > Jobs, where you can see each feed downloading data to MISP.
+<br>
 
-<br><br>
+### CronJob
+As feeds are ever updaing with new information, they aren't automatically updated by MISP and is required to be manually updates in the ***Feeds*** using the ***Fetch and store all feed data***. This is a dedious process and although MISP does have a built in Task Schedular, it isnt very reliable. Alternativly the ***Fetch and store all feed data*** can be triggered using the MISP REST api which makes it possible to turn it into a CronJob that runs of the host every day.  
+<br>
+1. Ensure that you have a API key that you can use to make the API call to MISP
+2. This command will make the api call to MISP to update all feeds, test it on your host before we make it a cronjob:
+  ```bash
+  /usr/bin/curl -XPOST --insecure --header "Authorization: <API-KEY>" --header "Accept: application/json" --header "Content-Type: application/json"     https://localhost/feeds/fetchFromAllFeeds
+  ```
+3. Returning to the MISP webpage, to ensure that the feed update was triggered successfull. Navagate to the ***Administration*** > ***Jobs*** page, where there should be a list of runnings job for each feed.   
+3. To make this into a CronJob, use the following command to edit your cronjob file:
+  ```bash
+  cronjob -e
+  ```
+5.Add the following command to the file:
+  ```bash
+  # Daily MISP Feed synce 
+  0 1 * * * /usr/bin/curl -XPOST --insecure --header "Authorization: <API-KEY>" --header "Accept: application/json" --header "Content-Type: application/json" https://localhost/feeds/fetchFromAllFeeds
+  ```
 
