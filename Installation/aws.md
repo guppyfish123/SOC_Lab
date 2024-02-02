@@ -118,8 +118,41 @@ By incorporating such scripts into User Data, we streamline the process of keepi
 ### Secrets Manager
 Secrets Manager is an aws services which helps users in managing and retrieving credentials such as API keys, OAuth tokens and application credentails. Improving overall security posture as note to have sensitive information hard coded into application configurations files in your host. 
 <br>
-As an example we'll make a Secret to store our credentials for one of Cassandra Services
+**Store a New Secret:**
 1. To create a secret, go to your AWS Secrets Manager in aws. Here we can create our secret by clicking the ***Store a new secret*** button.
 2. First select the type of secret you want to store under ***Secret Type***. We'll select ***Other***.
 3. In ***Key/value pairs*** we can make two rows, one for our username and password. Enter in a key and value format (e.g. Username: Cassandra).
-4.      
+4. Once completes, click ***Next*** on the bottom rigth of the window to continue.
+5. Give the Secret a Name & Description under ***Secret name and description***
+6. Leave all other settings as defualt and click ***Next*** until Secret is created
+<br>
+***IAM***
+Since our VM is running on AWS's EC2 instance service and our secrets are being stored using AWS's Secret Manager, we need to give permissions for each of the services to communicate with each other.
+   
+
+<br>
+
+Now, to retrieve the secret you have set up from AWS Secret Manager, use the following command:
+```bash
+# Replace your_secretID & your_region with your own 
+aws secretsmanager get-secret-value --secret-id your_secretID --region your_region
+```
+The output will look similar to this JSON structure:
+```json
+{
+    "ARN": "arn:aws:secretsmanager:ap-southeast-2342:234234:secret:secret-2342",
+    "Name": "secret-name",
+    "VersionId": "234467-7f9d-4361-8517-fs98234290",
+    "SecretString": "{\"username\":\"your_username\",\"password\":\"your_password\"}",
+    "VersionStages": [
+        "AWSCURRENT"
+    ],
+}
+```
+<br>
+
+To extract the username and password for use in TheHive's configuration file, create a `.env` file in the `/etc/thehive` directory with the following content:
+```bash
+# Replace your_secretID & your_region with your own 
+CASSANDRA_USER=$(aws secretsmanager get-secret-value --secret-id your_secretID --region your_region | jq -r '.SecretString | fromjson | .username')
+CASSANDRA_PASSWORD=$(aws secretsmanager get-secret-value --secret-id your_secretID --region your_region | jq -r '.SecretString | fromjson | .password')
