@@ -1,12 +1,35 @@
 # <img align="center" src="https://thehive-project.org/assets/ico/favicon.ico" height="45px" width="45px">&nbsp; The Hive
 For this lab, We'll be running Version: 4.1.24-1 of The Hive. For more information on The hive and see the offical documentation [link](https://docs.thehive-project.org/thehive/)
+<br><br>
+
+## :books: Table Of Content
+ - [Installation](#installation)
+   - [Java](#java)
+   - [Cassandra](#cassandra)
+   - [TheHive](#thehive)
+ - [Configurations](#configurations)
+   - [Cassandra](#cassandra)
+   - [Indexing Engine](#indexing-engine)
+   - [TheHive](#thehive)
+   - [File Storage](#file-storage)
+   - [Security](#security)
+ - [Startup](#startup)
+   - [Cassandra](#cassandra)
+   - [TheHive](#the-hive)
+
 <br>
 
-## Introduction
-The Hive is a open source security incidient response flatform that will be our central point of handling and mediating alerts coming through from elastic. Its intergration with MISP and Cortex make it a good choice for us to use as a free software.
+## <img align="center" src="https://files.softicons.com/download/social-media-icons/free-social-media-icons-by-uiconstock/png/512x512/AWS-Icon.png" height="33px" width="33px">&nbsp;  AWS
+To kick off, the first item to action is to launch a virtual machine (VM) to host our Hive services. In this guide, I'll be using an AWS EC2 Ubuntu instance for this purpose. However, feel free to choose any cloud or on-premises service that suits your preferences. If you're unfamiliar with setting up a VM in AWS, you can follow a step-by-step walkthrough provided [here](./aws).
+<br>
 
 ## <div id="installation">💻 Installation
-The hive contains some pre-requirements that the application uses to run. Thse are Java and cassandra which we'll need to install first to get started.
+### Update Machine
+Before diving into Cortex installation, let's ensure our machine is up to date:
+```bash
+Sudo apt update && sudo apt upgrade -y
+```
+<br>
 
 ### Java
 TheHive only supports Java 8 running on its primary node. To download/install java 8, run the following command:
@@ -140,7 +163,7 @@ db {
 ```
 <br><br>
 
-**Security (optional)**<br>
+### Security
 Leaving passwords in plain text is considered bad practice, and for improved security, we can implement a Key Vault system. In this scenario, we will use AWS's Secrets Manager and the aws-cli to retrieve secrets securely during each session. A detailed tutorial on setting up AWS Secret Manager with your EC2 Instance is available [here](./aws).
 <br><br>
 Once your secret is set up, use the following command to install awscli:
