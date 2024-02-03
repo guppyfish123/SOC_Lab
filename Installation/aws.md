@@ -126,33 +126,73 @@ Secrets Manager is an aws services which helps users in managing and retrieving 
 5. Give the Secret a Name & Description under ***Secret name and description***
 6. Leave all other settings as defualt and click ***Next*** until Secret is created
 <br>
-***IAM***
-Since our VM is running on AWS's EC2 instance service and our secrets are being stored using AWS's Secret Manager, we need to give permissions for each of the services to communicate with each other.
-   
 
+**IAM**<br>
+Since our VM is running on AWS's EC2 instance service and our secrets are being stored using AWS's Secret Manager, we need to give permissions for each of the services to communicate with each other.
+<br>
+Creating Policy:
+1. Navagate to the ***Identity and Access Management (IAM)*** Dashboard in AWS and under ***Access Management*** select ***Policies****.
+2. Click on ***Create Policy*** to create a new policy
+3. Change from ***Visual*** mode to ***JSON*** on the top right and paste the following JSON into the ***Policy Editor***:
+    ```json
+    {
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "VisualEditor0",
+			"Effect": "Allow",
+			"Action": "secretsmanager:GetSecretValue",
+			"Resource": "<Secret_ARN>"
+		}
+	  ]
+    }
+    ```
+> [!NOTE]
+> Ensure when making permissions that we are following the best practise of least privilagded, meaning we are assigning the least amount of access required that is needed to completed the required task.
+
+4. Once completed, click ***Next*** to continue
+5. Under ***Policy details*** provide a Name and Description for your policy
+6. Complete your policy now by clicking ***Create Policy*** 
 <br>
 
-Now, to retrieve the secret you have set up from AWS Secret Manager, use the following command:
+**Create Role**<br>
+1. Navagate to the ***Identity and Access Management (IAM)*** Dashboard in AWS and under ***Access Management*** select ***Roles****.
+2. Click on ***Create Role*** to create a new role.
+3. Set ***Trusted entity type*** to ***AWS Service*** and set ***Use Case*** to  ***EC2***.
+4. Clicking ***Next*** to continue, In the List of ***Permissions policies*** select the policy we had previously just made.
+5. Clikcking ***Next***, lastly provided a Name and Description under ***Role Details***.
+6. Once completed, finalize your new role by clicking ***Create Role***
+<br>
+
+**Assign Role**<br>
+Now that we have created our new role that provides permission for our EC2 Instance to pull a Secret from our Secret Manager, we need to assign it over to our required instance.
+1. Navagate to ***EC2 Instance*** service to your ***Instances*** listing.
+2. Select the Instance you want to assign our role to and navagate to ***Actions*** > ***Security*** > ***Modify IAM Role***.
+3. Search for the Role that we had just created and select it.
+4. Once completed, click on ***Update IAM Role*** to assign the new role to our EC2 Instance.
+<br>
+
+**CLI Get_Value**<br>
+Our EC2 Instance will now access our secret that we created from our Secret Manager in AWS. To test this we can use the following command while in our host:
 ```bash
 # Replace your_secretID & your_region with your own 
-aws secretsmanager get-secret-value --secret-id your_secretID --region your_region
+aws secretsmanager get-secret-value --secret-id your_secretName --region your_region
 ```
 The output will look similar to this JSON structure:
 ```json
 {
-    "ARN": "arn:aws:secretsmanager:ap-southeast-2342:234234:secret:secret-2342",
+    "ARN": "arn:aws:secretsmanager:ap-southeast-342:234234:secret:secret-2342",
     "Name": "secret-name",
-    "VersionId": "234467-7f9d-4361-8517-fs98234290",
-    "SecretString": "{\"username\":\"your_username\",\"password\":\"your_password\"}",
+    "VersionId": "2344467-7f9d-4361-8517-fs923421290",
+    "SecretString": "{\"username\":\"username\",\"password\":\"password\"}",
     "VersionStages": [
         "AWSCURRENT"
     ],
 }
 ```
-<br>
-
-To extract the username and password for use in TheHive's configuration file, create a `.env` file in the `/etc/thehive` directory with the following content:
+As we only need to pull only the username and password from the JSON ouput, we'll need to filter the results down to just those two values:
 ```bash
 # Replace your_secretID & your_region with your own 
-CASSANDRA_USER=$(aws secretsmanager get-secret-value --secret-id your_secretID --region your_region | jq -r '.SecretString | fromjson | .username')
-CASSANDRA_PASSWORD=$(aws secretsmanager get-secret-value --secret-id your_secretID --region your_region | jq -r '.SecretString | fromjson | .password')
+USERNAME=$(aws secretsmanager get-secret-value --secret-id your_secretName --region your_region | jq -r '.SecretString | fromjson | .username')
+PASSWORD=$(aws secretsmanager get-secret-value --secret-id your_secretName --region your_region | jq -r '.SecretString | fromjson | .password')
+```
