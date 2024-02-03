@@ -1,6 +1,5 @@
 # SOC_Lab
-
-This DIY project utilizes a range of free open source resources including Elastic, Kibana, Fleet, MISP, Cortex, The Hive, Shuffle, and AWS. The goal of his lab is to provide you with a comprehensive hands-on experience in managing a production-like environment, seamlessly integrating a SIEM (Security Information and Event Management), SOAR (Security Orchestration, Automation, and Response), and EDR (Endpoint Detection and Response) for optimal cybersecurity practices.
+This DIY project utilizes a range of free open source resources including Elastic, Kibana, Fleet, MISP, Cortex, The Hive, Shuffle, and more. The goal of his lab is to provide you with a comprehensive hands-on experience in managing a production-like environment of a SIEM (Security Information and Event Management), SOAR (Security Orchestration, Automation, and Response), and EDR (Endpoint Detection and Response) with real world data. Exposing certain endpoint to the public inernet to generate real world log data and metrics that can then be used to test alert triggers and case creation. 
 
 
 ## Key Components
@@ -22,4 +21,15 @@ Cortex serves as a central repository of analytical tools, simplifying observabl
 Shuffle, an Automation Suite with an extensive range of connectors to popular software, excels in facilitating seamless notification-to-action across multiple resources. Discover more about Shuffle here [Link](https://shuffler.io/).
 
 ### <img align="center" src="https://files.softicons.com/download/social-media-icons/free-social-media-icons-by-uiconstock/png/512x512/AWS-Icon.png" height="30px" width="30px"> &nbsp;&nbsp;  AWS
-AWS, a powerful SaaS platform, anchors our lab by utilizing E3 instances to create VMs hosting all our servers. Harness the scalability and flexibility of AWS here [Link](https://aws.amazon.com/).
+AWS, an industry leading cloud providing, anchors our lab by utilizing E3 instances to create VMs hosting all our servers. Harness the scalability and flexibility of AWS here [Link](https://aws.amazon.com/).
+<br><br>
+
+## Key TakeAways
+Throughout this lab, we will delve into various skill sets and cover a wide range of topics. Our primary focus, however, will be on securing our environment and adhering to industry best practices to fortify our lab against external threats. Some key concepts covered in this lab include:
+- Utilizing a Key Vault (AWS Secret Manager) for storing sensitive credentials
+- Configuring firewall security settings for our virtual machines
+- Implementing Identity Access Management (IAM)
+- Hardening devices for enhanced security
+- Emphasizing patch management and automation
+- Securing traffic over TLS using self-signed certificates
+- Designing production-level system architecture
