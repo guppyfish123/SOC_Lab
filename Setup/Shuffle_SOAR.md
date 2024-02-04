@@ -41,4 +41,4 @@ use the variable ***$change_me*** with the the Key to the desired value.
     - **Artifact Id:** $create_observable.body.#._id
 12. Lastly we want to add a notification email action connect to our ***Creat Case*** Action to warm security administration when the flow is triggered due to an alert.
 13. Drag the Email action into the flow and link it to the ***Create Case*** action. An Shuffler api key will be require for this which can be found in your user settings.
-14. Once the desired parameters to the email are entered the flow is now ready to use.
+14. The Shuffle flow is now ready for use. 
