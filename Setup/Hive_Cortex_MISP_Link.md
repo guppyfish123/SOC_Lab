@@ -11,6 +11,7 @@ To ensure that we can track and manage our API key more easily, we'll first crea
 
 
 <br>
+
 **Create API Key**<br>
 1. Navagate to the ***Users index*** page by going to ***Administration*** > ***List Users***.
 2. Click on ***View*** icon(eye) on the far most right for our new API user.
@@ -89,3 +90,30 @@ cortex {
 }
 ```
 <br>
+
+## TheHive Cases
+Ensure that once both MISP & Cortex connectors have been enabled and configured to restart TheHive service to apply to changes made:
+```bash
+sudo systemctl restart thehive
+```
+To confirm that TheHive service can communicate with both MISP and Cortex, open up Thehive webpage. Once logged in, on the top right hand side of the window click on your profile and in the dropdown menu go to ***About***. A new window with appear and should confirm that TheHive can now communicate with both MISP and Cortex.
+
+### Test Case
+We are going to make a case that utilizes the services of both MISP and Cortex while in TheHive:
+1. To create a new case, ensure that you are in your ***Cases*** Page and click on ***Create Case +*** on the top of the page.
+2. The details of our case should be as follows:
+  - Title: Cortex & MISP Intergration Demo
+  - Description: Deming a case to test the intergration of MISP and Cortex
+  The rest of the settings can be left as defualt.
+3. Once completed, click ***Confirm*** to create the case.
+4. Opening our new case, navagate to the ***Observables*** tab and click the ***+*** Icon to create a new Obserbable.
+5. Fill in the details of the observable as follows:
+  - ***Type:*** Hash
+  - ***Value:*** 4a821767c6ce723e6fb4b8d54efd52df6cbd63fc0de47a7b8b39a6ec72b4be69
+  - Enable ***Is IOC***
+  - Tags: Hash
+6. Once completed, click ***Confirm*** to create the Observable.
+7. With this Observable we can now either ***Export/Share*** it to MISP for further investigation on what this hash value may link to or...
+8. Run an analyzer using our Virustotal connector we setup in Cortex by clicking the ***...*** Icon on the far most right of the Oberservable and in the dropdown select ***Run Analyzers***.
+9. Cortex will then return the results from the Analyzer to the Observable in TheHive for you to view, though MISP is recommended to use if you require a deeper investigation into the details of the hash.
+
