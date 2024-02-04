@@ -21,3 +21,25 @@ Connectors are powerful tool in Elastic, which enables external exporting of dat
 existing one edited. 
 ***Create New Connector:***<br>
 1. Navagate to the ***Connectors*** Page by going to ***Management*** > ***Connectors*** and click ***Create Connector***
+2. Set the following parameters of the connect as follows:
+    - **Name:** Shuffle
+    - **Method:** POST
+    - **URL:** <SHUFFLE_WEBHOOK_TRIGGER_URI>
+3. Once completed, click ***Save & test*** to contiue. We can now test our connector to ensure that it is reaching our Shuffle Flow.
+4. Parse in some random JSON to the body of the request:
+  ```json
+  {
+    {"Test": "Test"}
+  }
+  ```
+  Click ***Test*** to send the request.
+5. Moving over to our Shuffle flow we should be able to see the flow being triggered in the Webhook history. Confirming that our elastic connector is working as intended.
+<br>
+
+## Alert Response
+With our Shuffle connector now setup we can now utilize it in our Alerts as a response. 
+1. Navagating back over to our Alerts page under ***Security*** > ***Alerts***, we can edit ***Malware Prevention Alert*** by clicking on the blue text of it from our previous demo alerts with conducted ealier on
+our windows host.
+2. From their we should be token into the dashboard to the ***Malware Prevention Alert***, which can be edited by click the ***Edit Alert*** on the top right of the page. 
+3. Under ***Actions*** enable a ***Webhook*** action with the follow parameters
+    - **Webhook Connector**
