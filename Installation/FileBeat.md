@@ -1,8 +1,10 @@
 # <img align="center" src="https://seeklogo.com/images/E/elastic-beats-logo-02512BDFD2-seeklogo.com.png" height="40px" width="30px">&nbsp; Filebeat
+Filebeat, a component of the Elastic Stack, operates as a lightweight log shipper designed to streamline the process of collecting, forwarding, and centralizing log data. Installed on individual hosts, Filebeat excels in harvesting specific log files or data from various services, offering a flexible and configurable solution. Once configured, it efficiently forwards the collected logs to your Elasticsearch or Kibana instance, facilitating centralized storage and analysis. This seamless integration with Kibana enables users to harness the power of Elastic Stack's visualization and querying capabilities, making Filebeat a crucial tool for organizations seeking to aggregate and analyze log data from diverse sources across their infrastructure.
+<br><br>
 In this lab, we'll leverage Filebeat version 8.11. Refer to the official [Filebeat documentation](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-installation-configuration.html) for comprehensive installation and configuration details.
 
 > [!NOTE]
-> Ensure consistency by using the same version of Filebeat as your Elasticsearch and Kibana on the other host.
+> Ensure that the filebeat vesrion that is used aligns with that of the version used on you kibana instance
 <br>
 
 ## :books: Table Of Content
@@ -10,7 +12,7 @@ In this lab, we'll leverage Filebeat version 8.11. Refer to the official [Filebe
    - [Install Filebeat](#install-filebeat)
  - [Configurations](#configurations)
    - [Input](#input)
-   - [Modules](#fmodules)
+   - [Modules](# modules)
    - [Dashboard](#dashboard)
    - [Kibana Setup](#kibana-setup)
    - [Elasticsearch Output](#elasticsearch-output)
