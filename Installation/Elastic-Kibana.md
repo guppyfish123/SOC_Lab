@@ -1,5 +1,7 @@
-<h1 align=center><img align="center" src="https://www.elastic.co/apple-icon-57x57.png" height="45px" width="45px">&nbsp;&nbsp;ElasticSearch & Kibana Installation/Configurations/Setup</h1>
-
+# <img align="center" src="https://www.elastic.co/apple-icon-57x57.png" height="45px" width="45px">&nbsp;&nbsp; Elastic Kibana 
+The Kibana suite offers a comprehensive platform for data exploration and visualization. Kibana serves as the visualization layer, enabling users to effortlessly shape and navigate their data through intuitive interfaces, creating diverse visualizations, charts, and dashboards. Elasticsearch's robust search capabilities, combined with Kibana's visualization tools, empower users to extract meaningful insights, monitor data in real-time, and scale horizontally to accommodate growing data volumes. Together, Elasticsearch and Kibana provide a powerful solution for streamlining data management and gain actionable insights from their datasets.
+<br><br>
+   
 ## :books: Table Of Content
 - [ElasticSearch](#elasticsearch)
    - [Installation](#installation)
@@ -11,9 +13,12 @@
    - [Startup](#startup)
 <br>
 
-## VM Setup
-To kick off, we need a reliable Virtual Machine (VM) to host our Elasticsearch and Kibana services. I'll be utilizing a T2.Large instance in aws, which will serve as a primary host throughout this lab.
-If you're unfamiliar with setting up a VM in AWS, I've provided a handy mini-tutorial [here](./aws). It guides you through the process, ensuring you're ready to launch your AWS instance seamlessly.
+## <img align="center" src="https://files.softicons.com/download/social-media-icons/free-social-media-icons-by-uiconstock/png/512x512/AWS-Icon.png" height="33px" width="33px">&nbsp;  AWS
+To kick off the Lab we first require a virtual machine (VM) to host our Cortex services. In this lab, I'll be utilizing AWS's EC2 Instances Service to run my VMs. However, feel free to choose any cloud or on-premises service that suits your preferences and budget. If you're unfamiliar with setting up a VM in AWS, you can follow a step-by-step walkthrough provided [here](./aws).
+<br>
+
+### Security groups
+In AWS, managing security groups is crucial to controlling traffic coming into and from our host. Adhering to the principle of least privilege ensures that only the necessary ports are open that the host required in order to operation with. For detailed instructions on configuring security groups in AWS, refer to [GUIDE](./aws).
 <br><br>
 
 # <img id="elasticsearch" src="https://static-00.iconduck.com/assets.00/elasticsearch-icon-1839x2048-s0i8mk51.png" height="30px" width="30px">&nbsp; ElasticSearch
@@ -22,7 +27,7 @@ For this lab, we'll be using ElasticSearch Version 8.11, the current version as 
 
 ## <div id="installation">💻 Installation
 ### Update Machine
-Before diving into ElasticSearch installation, let's ensure our machine is up to date:
+Before diving into ElasticSearch installation, let's ensure our host is up to date:
 ```bash
 Sudo apt update && sudo apt upgrade -y
 ```
@@ -43,12 +48,14 @@ With these commands, ElasticSearch is now up and running.
 <br><br>
 
 ## <div id="configurations">⚙️ Configurations
-ElasticSearch's configurations can be complex, depending on your environment and requirements. We'll adjust settings to enhance the security of our Elastic instance. Configuration settings are stored in the elasticsearch.yml file. Open the file using Vim:
+Using the following command to open up the elasticsearch configurations file to make the follow changes to configure elasticsearch to run on our host:
 ```bash
 sudo vim /etc/elasticsearch/elasticsearch.yml
 ```
 > [!NOTE]
-> We'll be using Vim as our text editor in this lab. If you prefer another text editor like Nano, feel free to use it. For a quick Vim tutorial, check [link](../vim.md)
+> We'll be using Vim as our text editor in this lab. If you prefer another text editor like Nano, feel free to use it. For a quick Vim tutorial, check [link](./vim.md)
+
+<br>
 
 Remove the # from the beginning of lines to uncomment and set the following parameters:
   - luster.name: {Name of your elastic cluster}
@@ -60,9 +67,9 @@ Remove the # from the beginning of lines to uncomment and set the following para
 <br>
 
 ### Self Signed Certificates 
-To secure our Elastic Host and encrypt traffic over HTTPS, we'll set up Self-Signed Certificates using elasticsearch-certutil found in /usr/share/elasticsearch/bin.
+To secure our Elastic Host and encrypt traffic over HTTPS, we'll set up Self-Signed Certificates using elasticsearch-certutil tool found in the `/usr/share/elasticsearch/bin` directory.
 
-1. Make our CA certificate and key for our clusters:
+1. To make a CA certificate and key for our services, use command:
 ```bash
 ./elasticsearch-certutil ca --pem --out /etc/elasticsearch/certs/ca.zip
 
@@ -98,14 +105,14 @@ sudo chown -R /etc/elastisearch/certs
 ```
 <br>
 
-Now, add the certificates to your elasticsearch.yml file:
+Now, add the certificates to the `elasticsearch.yml` configuration file to enabled SSL encryption:
 ```yml
 xpack.security.enabled: true
 xpack.security.enrollment.enabled: true
 xpack.security.http.ssl.enabled: true
 xpack.security.transport.ssl.enabled: true
 ```
-Now to add our certificates
+Add in the Self Signed Certificates:
 ```yml
 xpack.security.http.ssl:
   enabled: true
@@ -151,8 +158,6 @@ For this lab, we'll be using kibana Version 8.11, the current version as of 2023
 > Ensure that you are using the same version of kibana as you are elasticsearch
 
 ## <div id="installation">💻 Installation 
-Now that we have ElasticSearch installed and configured, we move on to Kibana. We'll be installing version 8.11 of Kibana. Make sure that whatever version you are using matches the version of ElasticSearch that you have running. More information can be found in the official Kibana documentation [Link](https://www.elastic.co/guide/en/kibana/current/setup.html).
-
 To install Kibana, use the following command:
 ```bash
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
@@ -165,7 +170,7 @@ After installation, Kibana should output setup configs to the terminal. Note the
 <br><br>
 
 ## <div id="configurations">⚙️ Configurations
-Now, let's configure Kibana:
+Open the configuration file to kibana using the following command:
 ```bash
 sudo vim /etc/kibana/kibana.yml
 ```
@@ -180,12 +185,10 @@ Remove the # from the beginning of lines to uncomment and set the following para
 <br>
 
 ### Self Signed Certificates 
-Now, we need to create a self-signed certificate for our Kibana host to secure its traffic over HTTPS instead of Kibana's default HTTP, which isn't secure.
-
-To get started, create a directory to store your certs while in the /etc/kibana/ directory. Let's call our directory certs.
-
-Head back over to your /usr/share/elasticsearch/bin directory so that you can create another certificate.
-1. Make our Kibana host certificate:
+As by Defualt kibana doesn't encrypt its traffic over TLS and uses the standard HTTP protocol, using Self Signed Certificates will enable the encryption of traffic for our host.
+To Store our Certs to be used by kibana make a folder called `Certs` in the `/etc/kibana/` directory.
+<br><br>
+1. Self Signed Certificates for Kibana:
 ```bash
 ./elasticsearch-certutil cert --out /etc/kibana/certs/kibana.zip --name kibana --ca-cert /etc/elasticsearch/certs/ca/ca.crt --ca-key /etc/elasticsearch/certs/ca/ca.key --ip 172.31.13.161 --pem
 
@@ -202,14 +205,13 @@ Head back over to your /usr/share/elasticsearch/bin directory so that you can cr
 ```bash
 unzip elastic.zip
 ```
-3. Change Permission to certs directory
+3. Change Permission to the `certs` directory
 ```bash
 sudo chown -R /etc/kibana/certs
 ```
 <br>
 
-Now to add our certificate to our kibana configs and enable SSL encryption. 
-Heading back over to our '/etc/kibana/kibana.yml' file:
+To enabled SSL encryption in Kibana open back up the kibana configuration file in `/etc/kibana/kibana.yml` and make the following changes:
 ```yml
 # =================== System: Kibana Server (Optional) ===================
 server.ssl.enabled: true
@@ -228,13 +230,14 @@ elasticsearch.ssl.verificationMode: full
 <br>
 
 ### Security 
-We'll also need to setup both a `xpack.encryptedSavedObjects.encryptionKey` and a `elasticsearch.serviceAccountToken` to put into the yml file.
-To setup a `xpack.encryptedSavedObjects.encryptionKey:` which will need to be setup to use any of the connectors in elastic. This encrypts the stored variabled for connectos such as creds and API keys and does this by the encryption key provided. The encryption key has to be a minium of 32 bytes long. You can make a 32 byte key by using the following command:
+Kibana also requires both the `xpack.encryptedSavedObjects.encryptionKey` and `elasticsearch.serviceAccountToken` to be configured in the in the `/etc/kibana/kibana.yml` file.
+To setup a `xpack.encryptedSavedObjects.encryptionKey:` which will be required for encryption purposes in order to use connectors in kibana. The encryption key has to be a minium of 32 bytes long in order to ve valid and can be generated using the following command:
 ```bash
 openssl rand -hex 16
 ```
+<br>
 
-Next up is the `elasticsearch.serviceAccountToken` which we are going to use instead of a username & password to connect to elasticsearch as this in my more secure way then leaving creds in plain text. 
+To setup a ***serviceAccountToken*** which can be used to authenticate with elasticsearch instead of a generic username and password which can be harder to manage in this case.
 ElasticSearch has a tool to assist in making this tokem which can be found in your `/usr/share/elasticsearch/bin` directory.
 To create a service account token use the following command
 ```bash
@@ -295,10 +298,7 @@ sudo systemctl stop kibana
 <br><br>
 ## Conclusion
 Congratulations! With both Elasticsearch and Kibana successfully deployed, you're now ready to explore the power of your Elastic SOC Lab. Access Elasticsearch at https://*public-ip*:6900 and Kibana at https://*public-ip*:5601.
-> [!TIP]
-> Ensure that, at this point, you've adjusted your inbound traffic settings on your instance to allow access to Elasticsearch and Kibana ports. For guidance, refer to [this link](./aws).
 
-If you encounter any issues with the webpage not loading, delve into your `journalctl` logs to identify and troubleshoot the root cause of the error.
 
 
 
