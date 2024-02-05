@@ -37,9 +37,14 @@ existing one edited.
 <br>
 
 ## Alert Response
-With our Shuffle connector now setup we can now utilize it in our Alerts as a response. 
+With our Shuffle connector now setup we can now utilize it in our Alerts as a response action to trigger our SOAR. For each of our ***Malware Prevention Alert*** we'll set the alert to trigger our SOAR flow in Shuffle from elastic, through our webhook setup in our flow to send the alert data.
 1. Navagating back over to our Alerts page under ***Security*** > ***Alerts***, we can edit ***Malware Prevention Alert*** by clicking on the blue text of it from our previous demo alerts with conducted ealier on
 our windows host.
 2. From their we should be token into the dashboard to the ***Malware Prevention Alert***, which can be edited by click the ***Edit Alert*** on the top right of the page. 
 3. Under ***Actions*** enable a ***Webhook*** action with the follow parameters
-    - **Webhook Connector**
+    - **Webhook Connector:** <SHUFFLE_CONNECTOR>
+    - **Action Frequency:** Per Each Alert - Per Rule Run
+    - **If Alert Matches a Query:** Disabled
+    - **If Alert is Generated During Timeframe:** Disabled
+    - **Body:** { "context": "{{context:alerts}}" }
+4. Save the changes made and trigger another alert from your windows endpoint to confirm response action for the alerts is working as exspected.
