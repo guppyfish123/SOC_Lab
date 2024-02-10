@@ -1,4 +1,4 @@
-# Hive, Cortex & MISP Intergration
+# 🌐 Hive, Cortex & MISP Intergration
 One of the key feature of TheHive is the seamless intergration with MISP and Cortex, widing its capabilities to be used a central point of case management. 
 
 
