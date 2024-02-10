@@ -1,10 +1,12 @@
-# Shuffle SOAR
+# <img align="center" src="https://github.com/Shuffle/Shuffle/raw/main/frontend/public/images/Shuffle_logo_new.png" height="45px" width="45px">&nbsp; Shuffle SOAR
 Shuffle with is diverse library of connectors to industy leading applications is a key service for our security orchestration, automation, and response plateform. 
 Shuffle will be the starting point of where are alerts are first sent from elastic when triggered. Shuffle will handle actions such as Notification through email, 
 the creation of cases in TheHive with Key information from elastic, and triggering Crotex Analyze and exporting to MISP. Automating this flow of alerts enable security
 administrators to spend more time in investigating the threate in a more effeicent manner with all the key information they can have in one place.
 
-## Create Flow
+## 🔄 Create Flow
+We will make new workflow in Shuffle which will be triggered when a new alerts come through on our elastic host. It will then take the data in that alert send to shuffle and make a new case in TheHive which will filter down the key information of the alert into a more human readable format. Then within that new case, create a new observable with the Hash data collected from the alert of the malious file. From that Observable we can have then trigger a analyzer to run in MISP by our visustotal analyzer intergrated to get a general risk score of the hash. At the same time export it the observable to Cortex for further malious evulation and threate intelligence for Analyist to investigate. Lastly a notification email system can be setup to to notify the team on the presense of the alert, with link to Thehive case, MISP and cortex.
+<br>
 1. To create our first flow in Shuffle, move over to your Shuffle webpage and login.
 2. To create a new flow, while in the ***Workflows*** page click on ***+*** Icon in a box. Provide a Name and Description for your flow and click ***Done***.
 3. First we'll start off by adding the trigger to our flow by tragging in the ***Webhook*** trigger into our flow. A unique ***Webhook URI*** we be generated which will be required in making your connector in elastic.
