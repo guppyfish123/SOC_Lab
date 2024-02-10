@@ -1,5 +1,5 @@
 # SOC_Lab
-This DIY project utilizes a range of free open source resources including Elastic, Kibana, Fleet, MISP, Cortex, The Hive, Shuffle, and more. The goal of his lab is to provide you with a comprehensive hands-on experience in managing a production-like environment of a SIEM (Security Information and Event Management), SOAR (Security Orchestration, Automation, and Response), and EDR (Endpoint Detection and Response) with real world data. Exposing certain endpoint to the public inernet to generate real world log data and metrics that can then be used to test alert triggers and case creation. 
+This SOC Lab project utilizes a range of free open source resources including Elastic, Kibana, Fleet, MISP, Cortex, The Hive, Shuffle, and more. The goal of his lab is to provide you with a comprehensive hands-on experience in managing a production-like environment of a SIEM (Security Information and Event Management), SOAR (Security Orchestration, Automation, and Response), and EDR (Endpoint Detection and Response) with real world data. Exposing certain endpoint to the public inernet to generate real world log data and metrics that can then be used to test alert triggering and case creation/handling. 
 
 
 ## Key Components
@@ -25,11 +25,15 @@ AWS, an industry leading cloud providing, anchors our lab by utilizing E3 instan
 <br><br>
 
 ## Key TakeAways
-Throughout this lab, we will delve into various skill sets and cover a wide range of topics. Our primary focus, however, will be on securing our environment and adhering to industry best practices to fortify our lab against external threats. Some key concepts covered in this lab include:
-- Utilizing a Key Vault (AWS Secret Manager) for storing sensitive credentials
-- Configuring firewall security settings for our virtual machines
-- Implementing Identity Access Management (IAM)
-- Hardening devices for enhanced security
-- Emphasizing patch management and automation
-- Securing traffic over TLS using self-signed certificates
-- Designing production-level system architecture
+Throughout this lab, we will will cover a diverse range of skill sets and a multitude of topics relating to Could Security, Cloud hosting/management, Design architecture and more. Our objective for this lab remains the fortification of our environment, adhering meticulously to industry-leading practices to safeguard our lab against potential malious threats actors. Here's a glimpse of the some of the concepts we explore in this lab:
+  - Harnessing the potency of a Key Vault, exemplified by AWS Secret Manager, to securely store and manage sensitive credentials.
+  - Fine-tuning and managing the firewall configurations of our VMs, ensuring stringent control over inbound and outbound traffic.
+  - Leveraging AWS EC2 Instances for the seamless creation and management of virtual machines, bolstering our infrastructure with cloud-native capabilities.
+  - Implementing Identity Access Management (IAM) to control and manage user access to AWS resources.
+  - Prioritizing patch management and automation to safeguard against vulnerabilities and ensure the consistent application of security updates.
+  - Establishing robust TLS encryption mechanisms using self-signed certificates, fortifying the confidentiality and integrity of data transmission.
+  - Designing production-level system architectures that prioritize scalability, reliability, and resilience.
+  - Setting up reverse-proxies and configuring cron-jobs to streamline operational tasks and optimize system performance.
+  - Implementing best practices for credential handling within our codebase, ensuring the utmost security of sensitive information.
+  - Mastering AWS VPC management to create isolated virtual networks with fine-grained control over communication and access.
+  - Implementing rigorous security hardening measures by disabling unnecessary services and ports on our host systems, bolstering defense against potential threats.
