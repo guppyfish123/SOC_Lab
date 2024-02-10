@@ -1,4 +1,4 @@
-# <img align="center" src="https://thehive-project.org/assets/ico/favicon.ico" height="45px" width="45px">&nbsp; Shuffle
+# <img align="center" src="https://github.com/Shuffle/Shuffle/raw/main/frontend/public/images/Shuffle_logo_new.png" height="45px" width="45px"> &nbsp; Shuffle
 
 ## :books: Table Of Content
  - [Installation](#installation)
