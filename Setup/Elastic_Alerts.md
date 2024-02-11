@@ -1,4 +1,4 @@
-# 🔔 Elastic Alerts
+# <img align="center" src="https://cdn.worldvectorlogo.com/logos/elastic-stack.svg" height="50px" width="50px">&nbsp; Elastic Alerts
 Since we now have our Fleet Server setup with our endpoints connected we can start to generate some traffic and setup alerts to trigger on certains conditions. 
 Our Kibana EDR that we setup for our windows host will be our main log connection method and already has preconfigured alerts that we will use in this lab.
 With these alerts, we'll have them exported using a websocket that we can use from Shuffle to start our security orchestration, automation and response.
