@@ -48,7 +48,7 @@ sudo apt install cassandra
 ```
 
 ### TheHive
-To donwload/install version 4.X of TheHive, run the following command:
+To download/install version 4.X of TheHive, run the following command:
 ```bash
 curl https://raw.githubusercontent.com/TheHive-Project/TheHive/master/PGP-PUBLIC-KEY | sudo apt-key add -
 echo 'deb https://deb.thehive-project.org release main' | sudo tee -a /etc/apt/sources.list.d/thehive-project.list
@@ -172,7 +172,7 @@ sudo apt-get install awscli
 ```
 To configure AWS on your host, run the following command:
 ```bash
-aws comfiguration
+aws configurations
 # Just leave all input blank and enter through them all
 ```
 <br>
@@ -255,7 +255,7 @@ localfs.location = /opt/thp/thehive/files
 
 ## <div id="startup">🚀 Startup
 ###Cassandra
-Cassandra should already be running from when we installed it. We need to restart the service to apply to changes that we made ealier.
+Cassandra should already be running from when we installed it. We need to restart the service to apply to changes that we made earlier.
 ```bash
 sudo systemctl restart cassandra 
 ```
@@ -295,5 +295,5 @@ sudo systemctl daemon-reload
 sudo systemctl enable thehive
 ```
 <br>
-TheHive should now be reachable on your host `http://YOUR_SERVER_ADDRESS:9000/` with a login page. The defualt admin user is admin@thehive.local with password secret. Which should be change once you can login.
+TheHive should now be reachable on your host `http://YOUR_SERVER_ADDRESS:9000/` with a login page. The default admin user is admin@thehive.local with password secret. Which should be change once you can login.
 

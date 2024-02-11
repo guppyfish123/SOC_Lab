@@ -16,7 +16,7 @@ To kick off, the first step is to launch a virtual machine (VM) to host our Shuf
 
 ## <div id="installation">💻 Installation
 ### Update Machine
-Before diving into installating Shuffle, let's ensure our machine is up to date:
+Before diving into installing Shuffle, let's ensure our machine is up to date:
 ```bash
 Sudo apt update -y && sudo apt upgrade -y
 ```
@@ -32,7 +32,7 @@ Sudo apt update -y && sudo apt upgrade -y
   ```bash
   git clone https://github.com/frikky/Shuffle
   ```
-3. Navagate to the `Shuffle` Directory and run the following command to startup the docker file:
+3. Navigate to the `Shuffle` Directory and run the following command to startup the docker file:
   ```bash
   sudo docker-compose up -d # This may take a while when starting up the docker file for the first time, as the docker needs to install/setup the required packages
   ```
@@ -56,7 +56,7 @@ To secure our `Shuffle` folder with our docker configs, we'll move the folder ov
 ```bash
 cp /path/to/destination /path/to/file
 ```
-To ensure our Shuffle folder isn't accessable by all users, we'll lock to file down so that docker and root can access it
+To ensure our Shuffle folder isn't accessible by all users, we'll lock to file down so that docker and root can access it
 ```bash
 sudo chown root:docker /Shuffle
 sudo chmod 770 /Shuffle
@@ -65,7 +65,7 @@ sudo chmod 770 /Shuffle
 
 ### Secure TLS
 As we want to use a secure connection to our shuffle webpage that uses TLS, we can to close off port 80. 
-Navagate to your `docker-compose.yml` file and make the following changes:
+Navigate to your `docker-compose.yml` file and make the following changes:
 ```yml
 services:
   frontend:
@@ -82,8 +82,8 @@ services:
 <br><br>
 
 ## <div id="startup">🚀 Startup
-Now that we have our shuffle instance up and running we want to make it start on boot so that everytime we need to restart or startup or machine we don't have manually startup the docker file. 
-1. Create a systemd service file using the following comannd:
+Now that we have our shuffle instance up and running we want to make it start on boot so that every time we need to restart or startup or machine we don't have manually startup the docker file. 
+1. Create a systemd service file using the following commnad:
   ```bash
   sudo vim /etc/systemd/system/my-docker-app.service
   ```
@@ -108,7 +108,7 @@ Now that we have our shuffle instance up and running we want to make it start on
   ```bash
   sudo systemctl daemon-reload
   ```
-4. Enaled the service to start on boot:
+4. Enable the service to start on boot:
   ```bash
   sudo systemctl enable my-docker-app.service
   ```
@@ -122,5 +122,5 @@ Now that we have our shuffle instance up and running we want to make it start on
   ```
 <br>
 
-Shuffle is now be running on our host and accessable through `https://<HOST_IP>:3443` webpage on your browser.
+Shuffle is now be running on our host and accessible through `https://<HOST_IP>:3443` webpage on your browser.
 When accessing for the first time you should be prompted to create your admin account.

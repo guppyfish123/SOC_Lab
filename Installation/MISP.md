@@ -10,7 +10,7 @@
 <br>
 
 ## <img align="center" src="https://files.softicons.com/download/social-media-icons/free-social-media-icons-by-uiconstock/png/512x512/AWS-Icon.png" height="33px" width="33px">&nbsp;  AWS
-To kick off, the first step is to launch a virtual machine (VM) to host our MISP services. In this lab, I'll be using an AWS EC2 instance runnning a ubuntu OS. However, feel free to choose any cloud or on-premises services that suits your preferences. If you're unfamiliar with setting up a VM on AWS, you can follow a step-by-step walkthrough provided [here](./aws).
+To kick off, the first step is to launch a virtual machine (VM) to host our MISP services. In this lab, I'll be using an AWS EC2 instance running a ubuntu OS. However, feel free to choose any cloud or on-premises services that suits your preferences. If you're unfamiliar with setting up a VM on AWS, you can follow a step-by-step walkthrough provided [here](./aws).
 
 <br>
 <br>
@@ -43,20 +43,20 @@ bash /tmp/INSTALL.sh -A
 <br><br>
 
 ## <div id="configurations">⚙️ Configurations
-Once `INSTALL.sh` has stop running, the finaly ouput should be the configs that it has setup for MISP including all creds the services it has setup on the host. Most of these will not be need besides as defualt creds to MISP to sign in which should be the first thing listed.
-We should now be able to access MISP by going to `https:\\*Public-IP*` and login with our defualt credentials:
+Once `INSTALL.sh` has stop running, the finally output should be the configs that it has setup for MISP including all creds the services it has setup on the host. Most of these will not be need besides as default creds to MISP to sign in which should be the first thing listed.
+We should now be able to access MISP by going to `https:\\*Public-IP*` and login with our default credentials:
 ```
 username: admin@admin.test
 password: admin
 ```
-When logging in for the first time, misp we prompt up to change the defualt password to the admin account.
+When logging in for the first time, MISP we prompt up to change the default password to the admin account.
 <br>
 
-### Make our Organisation 
-In order for us to make our first organisation, go to Administration > Add Organisation. 
-1. Enter ***ORG name*** into Organisation Identifier
+### Make our organization 
+In order for us to make our first organization, go to Administration > Add organization. 
+1. Enter ***ORG name*** into organization Identifier
 2. Select ***Generate UUID***
-3. Select ***Submit** once completed at the bottom to make your Organisation
+3. Select ***Submit** once completed at the bottom to make your organization
 <br>
 
 ### Creating a User
@@ -64,14 +64,14 @@ To make a new user for your organization go to Administration > Add User.
 Fill in the following details for your user:
 1. Emails address (This can be made up)
 2. Tick ***Set Password*** and set a password for the account
-3. Select your organisation that you have just made
+3. Select your organization that you have just made
 4. Assign role as ***Org Admin***
 5. Click Create User once completed 
 
 <br>
 
 ### Feeds 
-To enable feed to have them appear on your List Events, go to Synce Actions > Feeds. By defualt MISP should have ~73 feeds avaliable for you to enable at choice under the ***List Feeds*** tab.
+To enable feed to have them appear on your List Events, go to sync Actions > Feeds. By default MISP should have ~73 feeds available for you to enable at choice under the ***List Feeds*** tab.
 If there are not ~73 feeds listed, they can be added manually by using the ***Import Feeds from JSON*** tab on the left.
 Copy and Past the following JSON into MISP and click add:
 https://github.com/MISP/MISP/blob/2.4/app/files/feed-metadata/defaults.json
@@ -82,21 +82,21 @@ To confirm that our feeds are syncing to MISP you can go to Administration > Job
 <br>
 
 ### CronJob
-As feeds are ever updaing with new information, they aren't automatically updated by MISP and is required to be manually updates in the ***Feeds*** using the ***Fetch and store all feed data***. This is a dedious process and although MISP does have a built in Task Schedular, it isnt very reliable. Alternativly the ***Fetch and store all feed data*** can be triggered using the MISP REST api which makes it possible to turn it into a CronJob that runs of the host every day.  
+As feeds are ever updating with new information, they aren't automatically updated by MISP and is required to be manually updates in the ***Feeds*** using the ***Fetch and store all feed data***. This is a tedious process and although MISP does have a built in Task Schedular, it isn't very reliable. Alternative the ***Fetch and store all feed data*** can be triggered using the MISP REST API which makes it possible to turn it into a CronJob that runs of the host every day.  
 <br>
 1. Ensure that you have a API key that you can use to make the API call to MISP
-2. This command will make the api call to MISP to update all feeds, test it on your host before we make it a cronjob:
+2. This command will make the API call to MISP to update all feeds, test it on your host before we make it a cronjob:
   ```bash
   /usr/bin/curl -XPOST --insecure --header "Authorization: <API-KEY>" --header "Accept: application/json" --header "Content-Type: application/json"     https://localhost/feeds/fetchFromAllFeeds
   ```
-3. Returning to the MISP webpage, to ensure that the feed update was triggered successfull. Navagate to the ***Administration*** > ***Jobs*** page, where there should be a list of runnings job for each feed.   
+3. Returning to the MISP webpage, to ensure that the feed update was triggered successfully. Navigate to the ***Administration*** > ***Jobs*** page, where there should be a list of running jobs for each feed.   
 3. To make this into a CronJob, use the following command to edit your cronjob file:
   ```bash
   cronjob -e
   ```
 5.Add the following command to the file:
   ```bash
-  # Daily MISP Feed synce 
+  # Daily MISP Feed sync 
   0 1 * * * /usr/bin/curl -XPOST --insecure --header "Authorization: <API-KEY>" --header "Accept: application/json" --header "Content-Type: application/json" https://localhost/feeds/fetchFromAllFeeds
   ```
 

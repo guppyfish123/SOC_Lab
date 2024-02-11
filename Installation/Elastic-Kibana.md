@@ -185,7 +185,7 @@ Remove the # from the beginning of lines to uncomment and set the following para
 <br>
 
 ### Self Signed Certificates 
-As by Defualt kibana doesn't encrypt its traffic over TLS and uses the standard HTTP protocol, using Self Signed Certificates will enable the encryption of traffic for our host.
+As by default kibana doesn't encrypt its traffic over TLS and uses the standard HTTP protocol, using Self Signed Certificates will enable the encryption of traffic for our host.
 To Store our Certs to be used by kibana make a folder called `Certs` in the `/etc/kibana/` directory.
 <br><br>
 1. Self Signed Certificates for Kibana:
@@ -231,14 +231,14 @@ elasticsearch.ssl.verificationMode: full
 
 ### Security 
 Kibana also requires both the `xpack.encryptedSavedObjects.encryptionKey` and `elasticsearch.serviceAccountToken` to be configured in the in the `/etc/kibana/kibana.yml` file.
-To setup a `xpack.encryptedSavedObjects.encryptionKey:` which will be required for encryption purposes in order to use connectors in kibana. The encryption key has to be a minium of 32 bytes long in order to ve valid and can be generated using the following command:
+To setup a `xpack.encryptedSavedObjects.encryptionKey:` which will be required for encryption purposes in order to use connectors in kibana. The encryption key has to be a minimum of 32 bytes long in order to be valid and can be generated using the following command:
 ```bash
 openssl rand -hex 16
 ```
 <br>
 
 To setup a ***serviceAccountToken*** which can be used to authenticate with elasticsearch instead of a generic username and password which can be harder to manage in this case.
-ElasticSearch has a tool to assist in making this tokem which can be found in your `/usr/share/elasticsearch/bin` directory.
+ElasticSearch has a tool to assist in making this token which can be found in your `/usr/share/elasticsearch/bin` directory.
 To create a service account token use the following command
 ```bash
  ./elasticsearch-service-tokens create elastic/kibana kibana_token

@@ -21,11 +21,11 @@ To kick off, the first step is to launch a virtual machine (VM) to host our Cort
 <br>
 
 ## <div id="fleet-sever-setup">💻 Fleet Sever Setup
-Open up your elastic webpage and navage down to Management > Fleet > Settings.
+Open up your elastic webpage and navigate down to Management > Fleet > Settings.
 
 ### Output 
 Since we are running a single node cluster we can use our Elasticsearch service that we already have running on our host as out output. 
-While in fleet settings, scroll down to output and click the pencil icon to edit the defualt elasticsearch configurations.
+While in fleet settings, scroll down to output and click the pencil icon to edit the default elasticsearch configurations.
 1. Change the ***Name*** to Elasticsearch
 2. Set ***Type*** to Elasticsearch
 3. Host can be set to Https://localhost:9000
@@ -40,7 +40,7 @@ While in fleet settings, scroll down to output and click the pencil icon to edit
 ### Add Fleet Server
 To add our fleet server, while still in the fleet settings click the ***Add Fleet Server*** button which will open up the configuration for your fleet server you want to add.
 1. Click on ***Advance*** to use the advance configurations.
-2. Under Select a policy for Fleet Server tick ***Collect System logs and metrics*** and then clik ***Create Policy*** to create your fleet server policy.
+2. Under Select a policy for Fleet Server tick ***Collect System logs and metrics*** and then click ***Create Policy*** to create your fleet server policy.
 3. Set ***Choose a deployment mode for security*** to ***Production***.
 4. Now under Add your Fleet Server Host set ***Name*** to Fleet and ***URL*** to https://<IP-FleetServer>:8220 then click ***Add host***.
 5. Click on ***Generate Service Token*** to generate your service token.
@@ -82,7 +82,7 @@ Since we're running our elastic instance over TLS to ensure secure communication
    ```bash
    unzip fleet.zip
    ```
-3. We also need to enclude our CA certificate in our folder as well before we transfer it.
+3. We also need to include our CA certificate in our folder as well before we transfer it.
    ```bash
    cp -r source_directory destination_dirctory
    ```
@@ -103,42 +103,42 @@ Sudo apt update && sudo apt upgrade -y
 <br>
 
 ### Run Installation Script
-Going back to our fleet server host, navagate over where you stored `elastic-fleet.sh` file. We can now add in the details to our Certificates we just transfered over to our host.
-Once completed we can now run our script `./elastic-fleet.sh` which will install elastic-agent and enroll the host as our fleet server in our elastic instance.
+Going back to our fleet server host, navigate over where you stored `elastic-fleet.sh` file. We can now add in the details to our Certificates we just transferred over to our host.
+Once completed we can now run our script `./elastic-fleet.sh` which will install elastic-agent and enrol the host as our fleet server in our elastic instance.
 Going back to our elastic page, we should now see our fleet server now popup as one of our agents.
 
 <br><br>
 
 ## <div id="window-agent-setup">⚙️ Window Agent Setup 
-Now that we have our Elastic Fleet server up and running we can start to intergrating our endpoints (agents).
+Now that we have our Elastic Fleet server up and running we can start to integrating our endpoints (agents).
 <br>
 
 ### Agent Policy 
-A policy is terms of Elastic Fleet is a collection of configurations and settings for the type of log data you want to collect from your agents. Making it easier for intergrating large volumes of endpointst that you want to have configured the same.
+A policy is terms of Elastic Fleet is a collection of configurations and settings for the type of log data you want to collect from your agents. Making it easier for integrating large volumes of endpoints that you want to have configured the same.
 <br>
-1. To make our first fleet policy, open up your elastic web page and navagate to your ***Fleet*** management tab. Under ***Agent Policies*** click on the ***Create Agent Policy*** button.
+1. To make our first fleet policy, open up your elastic web page and navigate to your ***Fleet*** management tab. Under ***Agent Policies*** click on the ***Create Agent Policy*** button.
 2. Name your policy ***Windows-Agent-Policy*** and tick ***Collect System Logs and Metrics***
 3. Under Advance options add a description of ***Core Windows Agent Policy***
-4. ***Defualt Namespace*** set to ***Windows*** and remove ***default***
+4. ***Default Namespace*** set to ***Windows*** and remove ***default***
 5. Tick both ***Collect Agent Logs*** & ***Collect Agent Metrics*** under ***Agent Monitoring***
 6. Enable ***Agent Tamper Protection***
-7. Leave all other options as defualt and click ***Create Agent Policy***
+7. Leave all other options as default and click ***Create Agent Policy***
 <br>
 
-### Add Intergration 
+### Add Integration 
 Opening up your newly created Agent Policy we will now need to add some integrations to our policy depending on what exactly we want to capture and report on our endpoints.
-As we are intergation a windows endpoint these are the intergration optoins we'll be using:
+As we are integration a windows endpoint these are the integration options we'll be using:
 - Elastic Defend
 - Windows
-The Defualt configurations for both of these intergrations will do for now and can be changed later if needed.
+The default configurations for both of these integrations will do for now and can be changed later if needed.
 <br>
 
 ### Add Windows Agent
-Aftering creating our windows policy we can now add our windows endpoint as an agent of our elastic fleet. 
+After creating our windows policy we can now add our windows endpoint as an agent of our elastic fleet. 
 1. In the ***Agent*** tab in ***Fleet***, click ***Add Agent***
 2. Select the policy that we just made under ***What type of host are you adding?***
-3. Set ***Enroll in Fleet?*** as ***Entroll in Fleet***
-4. Under ***Install Elastic Agent on your host*** elastic should have a preconfigured command to enroll you windows endpoint to fleet.
+3. Set ***Enrol in Fleet?*** as ***Enrol in Fleet***
+4. Under ***Install Elastic Agent on your host*** elastic should have a preconfigured command to enrol you windows endpoint to fleet.
  ```bash
  curl -L -O https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-8.11.3-linux-x86_64.tar.gz
  tar xzvf elastic-agent-8.11.3-linux-x86_64.tar.gz

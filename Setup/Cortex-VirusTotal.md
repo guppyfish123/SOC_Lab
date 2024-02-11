@@ -6,8 +6,8 @@ With its robust API, users can seamlessly access and leverage the wealth of info
 <br><br>
 
 ## VirusTotal API 
-VirusTotal provides a REST API which enabled us to query the SaerchEngine of VirusTotal remotily with ease. Before we can setup up our VirusTotal Cortex Analyzer, we will need to register for a API key 
-to use in order to connect with the VirusTotal from our Cortex Host. These API keys will only be issued when you create an account with VirusTotal which has no cost required, though they do have a payed 
+VirusTotal provides a REST API which enabled us to query the SaerchEngine of VirusTotal remotely with ease. Before we can setup up our VirusTotal Cortex Analyzer, we will need to register for a API key 
+to use in order to connect with the VirusTotal from our Cortex Host. These API keys will only be issued when you create an account with VirusTotal which has no cost required, though they do have a paid 
 version which unlocks further functionality. If you don't already have an account with VirusTotal, head over to [virustotal.com](https://www.virustotal.com/gui/join-us) to signup. 
 <br><br>
 Once you have an account and have signed into VisusTotal, head over to your to top right hand side of your window and click on your profile pick. From the menu listed click on ***API Key*** which we redirect you 
@@ -16,11 +16,11 @@ to your accounts API page. Here listed will be your free version of VirusTotal's
 <br>
 
 ## Analyzer Setup 
-1. Log into your Cortex account and navagate to ***Organisation*** > ***Analyzers***.
+1. Log into your Cortex account and navigate to ***Organisation*** > ***Analyzers***.
 2. In your Analyzer page use the search bar to search up ***VirusTotal*** to find the ***VirusTotal_GetReport_3_1*** Analyzer
 3. Enable the Analyzer by clicking the ***+ Enable*** and enter in the following configurations:
     - **Key:** <VIRUSTOTAL_APIKEY>
-  The remaining configs can be left as defualt and click ***Save***
+  The remaining configs can be left as default and click ***Save***
 4. With our VirusTotal Analyzer now enabled, moving over to the ***Anazlyer*** Tab on the top nav bar we should now see our ***VirusTotal_GetReport_3_1*** listed
 5. To ensure that our Analyzer is working we can do a test run by click the ***Run*** button and set the following Configurations:
     - **Data Type:** Hash

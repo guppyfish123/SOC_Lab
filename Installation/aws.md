@@ -47,12 +47,12 @@ For Windows users, connecting to your VM using Putty is a straightforward proces
 Download: [Putty](https://www.putty.org/)
 
 1. Open up the Putty Application on your machine
-2. Putty will load into the sesion detail tab, here you will enter in your Public IPv4 DNS to your instance into the ***Host Name (or IP Address)*** field. If your following along in the ***Connect to instance*** SSH Client Tab then your Public IPv4 DNS to your instance is provided in listing 4. ***Port*** should be set to 22 and ***Connection Type*** as SSH though this should be set automatically as default.
+2. Putty will load into the session detail tab, here you will enter in your Public IPv4 DNS to your instance into the ***Host Name (or IP Address)*** field. If your following along in the ***Connect to instance*** SSH Client Tab then your Public IPv4 DNS to your instance is provided in listing 4. ***Port*** should be set to 22 and ***Connection Type*** as SSH though this should be set automatically as default.
 3. Next we need to add the user we are wanting to connect to, which can be done in the ***Data*** tab on the left under ***Connection***. Set the ***Auto-Login username*** to Ubuntu, which is the default user that is create when you launch a Ubuntu AWS Instance.
-4. Lastly we need to apply our Private key that we downloaded when we made our insatnce. Expand the ***SSH*** and ***Auth*** tabs on the left hand side till you see the ***Credentials*** tab. In the credentials tab we want to select our Private key that we have on file by hitting ***Browse*** under the ***Private key file for authentication*** field.
-5. Finally we can connect to our VM by hittin the ***Open*** button on the bottom right on the window
+4. Lastly we need to apply our Private key that we downloaded when we made our instance. Expand the ***SSH*** and ***Auth*** tabs on the left hand side till you see the ***Credentials*** tab. In the credentials tab we want to select our Private key that we have on file by hitting ***Browse*** under the ***Private key file for authentication*** field.
+5. Finally we can connect to our VM by clicking the ***Open*** button on the bottom right on the window
 
-You'll most likily be greeted with a pop-up warning which you can just accept. Though beside from that you have now connected to your AWS VM. 
+You'll most likely be greeted with a pop-up warning which you can just accept. Though beside from that you have now connected to your AWS VM. 
 <br><br>
 
 ## Security     
@@ -97,13 +97,13 @@ Now that we have identified the services, associated ports, and their accessibil
 <br>
 
 ### Patch Manager
-Following best practises, keeping your machines up to date with the latest security patches is crucial in maintaning our secure environment. Patch Manager is a aws service that enables you to setup regular compliance checks with set policies on patches for your host that you have running. Patch Manager can ensure that devices are checked regularly to ensure that are running the latest version for their OS and there applications.
+Following best practises, keeping your machines up to date with the latest security patches is crucial in maintaining our secure environment. Patch Manager is a AWS service that enables you to setup regular compliance checks with set policies on patches for your host that you have running. Patch Manager can ensure that devices are checked regularly to ensure that are running the latest version for their OS and there applications.
 <br><br>
-Patch Manager can bet setup in the AWS Systems Manager > Patch Manager > Dashboard. Here we will create a new patch policy by clicking ***Create Patch Policy*** and set your desired parameters in occurance, to install or just scan, instances to include, and which policies to apply for each OS. For my patch policy I applied the stanard OS policy and set to to scan & install any updates found for all instances every 2nd thursday (cron(18 0 ? * THU#2 *)). Scans can also be done manually during any time for a selected group of instances or all.
+Patch Manager can bet setup in the AWS Systems Manager > Patch Manager > Dashboard. Here we will create a new patch policy by clicking ***Create Patch Policy*** and set your desired parameters in occurrence, to install or just scan, instances to include, and which policies to apply for each OS. For my patch policy I applied the standard OS policy and set to to scan & install any updates found for all instances every 2nd thursday (cron(18 0 ? * THU#2 *)). Scans can also be done manually during any time for a selected group of instances or all.
 <br><br>
 
 **user data**
-In addition to employing patch management while instances are running, we can enhance the maintenance process by including a startup command in the User Data for our instances. The User Data is a script or cloud-init metadata that can be provided to an EC2 instance during launch. By adding a bash script, we can automate tasks to be executed on every boot.
+In addition to employing patch management while instances are running, we can enhance the maintenance process by including a start up command in the User Data for our instances. The User Data is a script or cloud-init metadata that can be provided to an EC2 instance during launch. By adding a bash script, we can automate tasks to be executed on every boot.
 <br>
 Here's an example of a simple bash script in User Data:
 ```bash
@@ -116,22 +116,22 @@ By incorporating such scripts into User Data, we streamline the process of keepi
 <br>
 
 ### Secrets Manager
-Secrets Manager is an aws services which helps users in managing and retrieving credentials such as API keys, OAuth tokens and application credentails. Improving overall security posture as note to have sensitive information hard coded into application configurations files in your host. 
+Secrets Manager is an AWS services which helps users in managing and retrieving credentials such as API keys, OAuth tokens and application credentails. Improving overall security posture as note to have sensitive information hard coded into application configurations files in your host. 
 <br>
 **Store a New Secret:**
-1. To create a secret, go to your AWS Secrets Manager in aws. Here we can create our secret by clicking the ***Store a new secret*** button.
+1. To create a secret, go to your AWS Secrets Manager in AWS. Here we can create our secret by clicking the ***Store a new secret*** button.
 2. First select the type of secret you want to store under ***Secret Type***. We'll select ***Other***.
 3. In ***Key/value pairs*** we can make two rows, one for our username and password. Enter in a key and value format (e.g. Username: Cassandra).
-4. Once completes, click ***Next*** on the bottom rigth of the window to continue.
+4. Once completes, click ***Next*** on the bottom right of the window to continue.
 5. Give the Secret a Name & Description under ***Secret name and description***
-6. Leave all other settings as defualt and click ***Next*** until Secret is created
+6. Leave all other settings as default and click ***Next*** until Secret is created
 <br>
 
 **IAM**<br>
 Since our VM is running on AWS's EC2 instance service and our secrets are being stored using AWS's Secret Manager, we need to give permissions for each of the services to communicate with each other.
 <br>
 Creating Policy:
-1. Navagate to the ***Identity and Access Management (IAM)*** Dashboard in AWS and under ***Access Management*** select ***Policies****.
+1. Navigate to the ***Identity and Access Management (IAM)*** Dashboard in AWS and under ***Access Management*** select ***Policies****.
 2. Click on ***Create Policy*** to create a new policy
 3. Change from ***Visual*** mode to ***JSON*** on the top right and paste the following JSON into the ***Policy Editor***:
     ```json
@@ -148,7 +148,7 @@ Creating Policy:
     }
     ```
 > [!NOTE]
-> Ensure when making permissions that we are following the best practise of least privilagded, meaning we are assigning the least amount of access required that is needed to completed the required task.
+> Ensure when making permissions that we are following the best practise of least privileged, meaning we are assigning the least amount of access required that is needed to completed the required task.
 
 4. Once completed, click ***Next*** to continue
 5. Under ***Policy details*** provide a Name and Description for your policy
@@ -156,18 +156,18 @@ Creating Policy:
 <br>
 
 **Create Role**<br>
-1. Navagate to the ***Identity and Access Management (IAM)*** Dashboard in AWS and under ***Access Management*** select ***Roles****.
+1. Navigate to the ***Identity and Access Management (IAM)*** Dashboard in AWS and under ***Access Management*** select ***Roles****.
 2. Click on ***Create Role*** to create a new role.
 3. Set ***Trusted entity type*** to ***AWS Service*** and set ***Use Case*** to  ***EC2***.
 4. Clicking ***Next*** to continue, In the List of ***Permissions policies*** select the policy we had previously just made.
-5. Clikcking ***Next***, lastly provided a Name and Description under ***Role Details***.
+5. Clicking ***Next***, lastly provided a Name and Description under ***Role Details***.
 6. Once completed, finalize your new role by clicking ***Create Role***
 <br>
 
 **Assign Role**<br>
 Now that we have created our new role that provides permission for our EC2 Instance to pull a Secret from our Secret Manager, we need to assign it over to our required instance.
-1. Navagate to ***EC2 Instance*** service to your ***Instances*** listing.
-2. Select the Instance you want to assign our role to and navagate to ***Actions*** > ***Security*** > ***Modify IAM Role***.
+1. Navigate to ***EC2 Instance*** service to your ***Instances*** listing.
+2. Select the Instance you want to assign our role to and navigate to ***Actions*** > ***Security*** > ***Modify IAM Role***.
 3. Search for the Role that we had just created and select it.
 4. Once completed, click on ***Update IAM Role*** to assign the new role to our EC2 Instance.
 <br>

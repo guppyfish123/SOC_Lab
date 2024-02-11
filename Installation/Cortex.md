@@ -1,7 +1,7 @@
 # <img align="center" src="https://thehive-project.github.io/Cortex-Analyzers/images/cortex-logo.png" height="45px" width="45px">&nbsp; Cortex
 Cortex stands as a robust analysis platform for quering various observables on a large scale, including IP addresses, emails, URLs, domains, files, and hashes, all within a unified single environment. Serving as a central hub for threat intelligence, digital forensics, and incident response. Through its build in REST API, automation capabilities are also possible.
 <br><br>
-The Cortex platform empowers SOCs and security administrators to conduct in-depth investigations using a comprehensive library of built-in analyzers and response actions. Moreover, Cortex provides the flexibility of customization to tailor its functionalities according to specific needs.
+The Cortex platform empowers SOCs and security administrators to conduct in-depth investigations using a comprehensive library of built-in analyzer and response actions. Moreover, Cortex provides the flexibility of customization to tailor its functionalities according to specific needs.
 <br><br>
 For detailed information about Cortex and its official documentation, refer to there [official documentation.](https://docs.thehive-project.org/cortex/)
 
@@ -40,7 +40,7 @@ Sudo apt update && sudo apt upgrade -y
 ```
 <br>
  
-Cortex serveral required Librarys/Packages that need to be installed before hand. Use the following command to install these required packages:
+Cortex requires several Library/Packages that need to be installed before hand. Use the following command to install these required packages:
 ```bash
 apt install wget gnupg apt-transport-https git ca-certificates ca-certificates-java curl  software-properties-common python3-pip lsb_release
 ```
@@ -99,7 +99,7 @@ search {
 ```
 <br>
 
-It is always best practise to not leave services running on their defualt ports, as this makes it easier for threat actors to know what services you are running on your host. As such, change
+It is always best practise to not leave services running on their default ports, as this makes it easier for threat actors to know what services you are running on your host. As such, change
 the port that cortex is running on by changing the following line in the configuration file `/etc/cortex/application.conf` as follows:   
 ```conf
 http.port = 8090
@@ -108,7 +108,7 @@ http.port = 8090
 <br>
 
 ### Analyzers & Responders
-Analyzers and Responders are the core function of Cortex, enabling us to analyze and respond is a wide range of forms with multiple differnt sources of data.
+Analyzers and Responders are the core function of Cortex, enabling us to analyze and respond is a wide range of forms with multiple different sources of data.
 
 1. Cortex required certain library/packages installed before hand to install the Analyzers and Responders modules into cortex:
  ```bash
@@ -123,7 +123,7 @@ Analyzers and Responders are the core function of Cortex, enabling us to analyze
  # Download the Analyzers & Responders modules from github 
  git clone https://github.com/TheHive-Project/Cortex-Analyzers
 ```
-3. With the `Cortex-Analyzers` downloaded, containing within it the Analyzers and Responders modules. To install these each Analyzers and Responders modules has a requirements.txt that outlines to insatllation requirements. This command will loop through each of those requirements.txt files and download the required python modules for the Analyzers and Responders:
+3. With the `Cortex-Analyzers` downloaded, containing within it the Analyzers and Responders modules. To install these each Analyzers and Responders modules has a requirements.txt that outlines to installation requirements. This command will loop through each of those requirements.txt files and download the required python modules for the Analyzers and Responders:
  ```bash
  for I in $(find Cortex-Analyzers -name 'requirements.txt'); do sudo -H pip3 install -r $I || true; done
  ```
@@ -212,8 +212,8 @@ These services may take some time to start up, but once they have initialized co
 1. Open a browser and connect to your Cortex page `http://YOUR_SERVER_ADDRESS:8090/`
 2. When loading the page for the first time, you'll be prompted to Update the Database, which will create a database in Elasticsearch that we're using to store all of our data for Cortex.
 3. Following, will be creating your first Cortex user, which will be your global administrator account.
-4. Loged into the global administrator account which will have limited functionality. Click on ***Add Organization*** to create a new organisation.
-5. To create a new user under an organisation, while in your oganisation click on ***Add User*** and ensure that the role is set to ***Read, Analyze, orgadmin***.
+4. log into the global administrator account which will have limited functionality. Click on ***Add Organization*** to create a new organisation.
+5. To create a new user under an organisation, while in your organization click on ***Add User*** and ensure that the role is set to ***Read, Analyze, orgadmin***.
 6. To create a password for a new user, click on ***New Password*** on the user to reset the passsword to the account so that it can be logged into.
 7. Logout of your global admin account on the top right and sign into your new user account. 
 <br>
@@ -223,7 +223,7 @@ Full functionality to Cortex should now be open and access Analyzers & Responder
 <br><br>
 
 ## Security 
-To ensure data remains encrypted while in trasnit and cannot be read by threat actors, Cortex can be configured to send traffic over TLS. Cortex by defualt will send traffic over HTTP insated of HTTPS and doesn't have a built in function to secure traffic over TLS.
+To ensure data remains encrypted while in trasnit and cannot be read by threat actors, Cortex can be configured to send traffic over TLS. Cortex by default will send traffic over HTTP instead of HTTPS and doesn't have a built in function to secure traffic over TLS.
 Setting up a Nginx service to redirect traffic over HTTPS, will secure our traffic and ensure that communication between server and end user remains encrypted.  
 <br>
 
@@ -319,10 +319,10 @@ sudo apt-get install openssl
   ```bash
   sudo ln -s /etc/nginx/sites-available/cortex.conf cortex
   ```
-4. Remove the following files to remove the defualt nginx page:
+4. Remove the following files to remove the default nginx page:
   ```bash
-  rm /etc/nginx/sites-available/defualt
-  rm /etc/nginx/sites-enabled/defualt
+  rm /etc/nginx/sites-available/default
+  rm /etc/nginx/sites-enabled/default
   ```
 5. Ensure that our next `./cortex.conf` can run with the following command to test the configurations with nginx:
   ```bash
@@ -332,7 +332,7 @@ sudo apt-get install openssl
   ```bash
   sudo systemctl reload nginx
   ```
-7. Cortex should now be accessable on `https://YOUR_SERVER_ADDRESS`
+7. Cortex should now be accessible on `https://YOUR_SERVER_ADDRESS`
 <br><br>
 
 ### Close port 8090 
