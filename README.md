@@ -1,4 +1,7 @@
-# SOC_Lab
+<h1 align=center>🔒 SOC LAB 🔒</h1>
+<img align="center" src="https://www.qomplx.com/content/images/2022/11/soc-image.png" height="100%" width="100%">
+<br>
+
 This SOC Lab project utilizes a range of free open source resources including Elastic, Kibana, Fleet, MISP, Cortex, The Hive, Shuffle, and more. The goal of his lab is to provide you with a comprehensive hands-on experience in managing a production-like environment of a SIEM (Security Information and Event Management), SOAR (Security Orchestration, Automation, and Response), and EDR (Endpoint Detection and Response) with real world data. Exposing certain endpoint to the public internet to generate real world log data and metrics that can then be used to test alert triggering and case creation/handling. 
 
 
